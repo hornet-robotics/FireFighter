@@ -1,0 +1,32 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/jester/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/jester/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard"
+  },
+  {
+    "Sourcefile": "/home/jester/FireFighter/main/build/sketch/main.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/jester/FireFighter/main/build/sketch/DriveBase.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/jester/FireFighter/main/build/sketch/FanMotor.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/jester/FireFighter/main/build/sketch/Firefighter.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
