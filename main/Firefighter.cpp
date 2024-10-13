@@ -19,9 +19,16 @@ void Firefighter::init() {
 
 
 void Firefighter::HtoA() {
-  drive.moveForward();
+
+  // example of subsystems being used
+
+  while (/*ultrasonic does not detect opening* on right side*/) {
+    drive.moveForward();
+  }
 
   // continue from here as more subystems are finished...
+
+  // consider using switch statement here?
 }
 
 void Firefighter::AtoB() {
