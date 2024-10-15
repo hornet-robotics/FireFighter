@@ -5,8 +5,10 @@ DriveBase testDrive;
 
 void setup() {
   // put your setup code here, to run once:
+  //ena = pwmA
+  //enb = pwmB
   
-  testDrive.init(2, 3, 4, 5, 10, 11); // setup motor pin locations
+  testDrive.init(6, 7, 8, 9, 5, 10); // setup motor pin locations
 
 }
 
@@ -16,7 +18,7 @@ void loop() {
   testDrive.setGlobalSpeed(255);
 
   testDrive.moveForward();
-  stopPause(1000);
+  //stopPause(1000);
   // testDrive.turnRight();
   // stopPause(1000);
 
