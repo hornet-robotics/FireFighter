@@ -6,16 +6,16 @@ void FanMotor::init(int p) {
   pin = p;
 
   esc.attach(pin);
-  esc.writeMicroseconds(1000);
+  esc.writeMicroseconds(1500);
   delay(2000);
 }
 //start bl motor depending on speed percentage
 void FanMotor::start(){
-  esc.writeMicroseconds(speed * 10 + 1000)  
+  esc.writeMicroseconds(speed * 10 + 1500);  
 }
 
 void FanMotor::stop(){
-  esc.writeMicroseconds(1000);
+  esc.writeMicroseconds(1500);
 }
 
 //*getters and setters*//

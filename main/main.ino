@@ -1,21 +1,19 @@
-#include "DriveBase.h"
+#include "FanMotor.h"
 
 // create subsystem instances (drive, ultrasonic, ect)
-DriveBase testDrive;
+FanMotor testDrive;
 
 void setup() {
   // put your setup code here, to run once:
   
-  testDrive.init(2, 3, 4, 5, 10, 11); // setup motor pin locations
+  testDrive.init(9);
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  testDrive.setGlobalSpeed(255);
-
-  testDrive.moveForward();
+  testDrive.start();
   stopPause(1000);
   // testDrive.turnRight();
   // stopPause(1000);

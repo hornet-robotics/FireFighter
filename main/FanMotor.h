@@ -12,11 +12,11 @@ class FanMotor {
   void start();
   void stop();
 
-  void setSpeed(int per); //set speed, percentage-wise
+  void setSpeed(int per); //set speed, [-50 = fully counter-clock], [50 = fully clockwise]
   void getSpeed();
 
   private:
-    int speed = 10; 
+    int speed = -10; 
     int pin;
     Servo esc;
 };
