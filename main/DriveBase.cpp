@@ -27,31 +27,24 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
 ///////////////////TODO will need to change directions based on motor placement on final robot (forward, back, left, right)
 // movement functions at set speed
 void DriveBase::moveForward(int speed) {
+  //right side
   digitalWrite(motor1Pin1, HIGH);
   digitalWrite(motor1Pin2, LOW);
 
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+  //left side
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);
 }
 
 void DriveBase::moveBack(int speed) {
+  //right side
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, HIGH);
 
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
-
-  analogWrite(pwmPin1, speed);
-	analogWrite(pwmPin2, speed);
-}
-
-void DriveBase::turnRight(int speed) {
-  digitalWrite(motor1Pin1, LOW);
-  digitalWrite(motor1Pin2, HIGH);
-
+  //left side
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, HIGH);
 
@@ -59,12 +52,27 @@ void DriveBase::turnRight(int speed) {
 	analogWrite(pwmPin2, speed);
 }
 
+void DriveBase::turnRight(int speed) {
+  //right side
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+
+  //left side
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
+
+  analogWrite(pwmPin1, speed);
+	analogWrite(pwmPin2, speed);
+}
+
 void DriveBase::turnLeft(int speed) {
+  //right side
   digitalWrite(motor1Pin1, HIGH);
   digitalWrite(motor1Pin2, LOW);
 
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+  //left side
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);
