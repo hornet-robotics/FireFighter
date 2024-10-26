@@ -11,9 +11,23 @@ class Firefighter {
     DriveBase drive;
     
     void init(); // create instances of subsystems
-    void lookForJunc(); // will use: drive, ultrasonic
-    void scanRoom(); // drive, ultrasonic, ir sensor
-    void extinguish(); // drive, ultrasonic, ir sensor, ext mechanism
+
+    void HtoA();
+    void AtoB();
+    void BtoC();
+    void CtoD();
+
+    void extinguish();
+
+    void AtoH();
+    void BtoH();
+    void CtoH();
+    void DtoH();
+
+    void openingOnRight();
+    void openingOnLeft();
+
+    bool flameDetected = false;
 
   private: 
     // which units (ask hardware)?
@@ -23,5 +37,7 @@ class Firefighter {
 
     float sideTolerance = 0;
     float sideDistance = 0;
+
+    float buffer = 0; // might need to be local var
     
 };

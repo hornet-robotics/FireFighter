@@ -29,7 +29,7 @@ class DriveBase {
 
   private: 
 
-    int globalSpeed = 255;
+    int globalSpeed = 255; // default is 255 (max speed);
     
     int motor1Pin1;
     int motor1Pin2;
