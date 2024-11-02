@@ -1,4 +1,5 @@
 #include "Firefighter.h"
+#include "DriveBase.h"
 
 // define pins names and values here is it is easier to track
 // Drivebase pins
@@ -22,7 +23,7 @@ void Firefighter::HtoA() {
 
   // example of subsystems being used
 
-  while (/*ultrasonic does not detect opening* on right side*/) {
+  while (true/*ultrasonic does not detect opening* on right side*/) {
     drive.moveForward();
   }
 

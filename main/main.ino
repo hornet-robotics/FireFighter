@@ -1,30 +1,20 @@
 #include "DriveBase.h"
+#include "Encoder.h"
 
 // create subsystem instances (drive, ultrasonic, ect)
-DriveBase testDrive;
+Encoder encoder;
 
 void setup() {
   // put your setup code here, to run once:
-  
-  testDrive.init(2, 3, 4, 5, 10, 11); // setup motor pin locations
+  encoder.init();
+
+  encoder.resetAngle();
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  testDrive.setGlobalSpeed(255);
+  encoder.getAngle();
 
-  testDrive.moveForward();
-  stopPause(1000);
-  // testDrive.turnRight();
-  // stopPause(1000);
-
-}
-
-// only used for testing
-void stopPause(int time) {
-  delay(time);
-  testDrive.stop();
-  delay(time);
 }

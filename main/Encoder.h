@@ -12,22 +12,25 @@ class Encoder {
     float getAngle();
     float getWrapAngle();
 
-    bool isMagnetHigh();
-    bool isMagnetLow();
     bool isMagnetDetected();
+
+    int readRawAngle();
 
     private:
 
     int lowByte; // raw angle 7:0
     word highByte; // raw angle 11:8
     int rawAngle;
-    int startAngle = 0;
-    int wrapAngle;
-    int globalAngle;
+    float startAngle = 0;
+    float wrapAngle;
+    float angleSum = 0;
+    float globalAngle;
     int quadrant = 1;
     int lastQuadrant = 1;
 
     const int SENSOR_ADDRESS = 0x36; // I2C sensor address
 
-    int readRawAngle();
-}
+    const float GEARBOX_RAIO = 57.7; // temporary move to drivebase instead ///////////////////////////////
+
+    //int readRawAngle();
+};
