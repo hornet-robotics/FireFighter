@@ -14,8 +14,6 @@ class Encoder {
 
     bool isMagnetDetected();
 
-    int readRawAngle();
-
     private:
 
     int lowByte; // raw angle 7:0
@@ -30,7 +28,5 @@ class Encoder {
 
     const int SENSOR_ADDRESS = 0x36; // I2C sensor address
 
-    const float GEARBOX_RAIO = 57.7; // temporary move to drivebase instead ///////////////////////////////
-
-    //int readRawAngle();
+    int readRawAngle();
 };

@@ -48,8 +48,8 @@ float Encoder::getAngle() {
 
     globalAngle = angleSum + angle;
 
-    Serial.begin(2000000);
-    Serial.println(globalAngle / GEARBOX_RAIO);
+    // Serial.begin(2000000);
+    // Serial.println(globalAngle / GEARBOX_RAIO);
 
     return globalAngle;
 }

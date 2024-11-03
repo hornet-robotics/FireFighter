@@ -1,5 +1,4 @@
 #include "Firefighter.h"
-#include "DriveBase.h"
 
 // define pins names and values here is it is easier to track
 // Drivebase pins

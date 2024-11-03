@@ -5,6 +5,13 @@
 
 void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB) {
 
+  // setup encoder
+  encoder.init();
+  encoder.resetAngle();
+
+  // stup PID
+  movePID = new PIDController(moveP);
+
   // power pins (+ and -)
   motor1Pin1 = m1p1;
   motor1Pin2 = m1p2;
@@ -24,7 +31,12 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
   pinMode(pwmPin2, OUTPUT);
 }
 
-///////////////////TODO will need to change directions based on motor placement on final robot (forward, back, left, right)
+// will need to delete Move obj since initialized using dynamic storage duration method
+// used to prevent memory leaks
+void DriveBase::freeMemory() {
+  delete movePID;
+}
+
 // movement functions at set speed
 void DriveBase::moveForward(int speed) {
   digitalWrite(motor1Pin1, HIGH);
@@ -71,7 +83,6 @@ void DriveBase::turnLeft(int speed) {
 }
 
 // overload movment functions
-
 void DriveBase::moveForward() {
   moveForward(globalSpeed);
 }
@@ -88,12 +99,48 @@ void DriveBase::turnLeft() {
   turnLeft(globalSpeed);
 }
 
+// move functions at set position (in)
+void DriveBase::moveForwardIn(float position) {
+  float error = position - getCurrentWheelPosition(); // calculate error
+  float command = movePID->update(error); // get command determined by PID conroller 
+                                //(using Arrow Operator to dereference movePID pointer then accessing update)
+  // adjust speed based on command value (if at postion command will be 0)
+  moveForward(command);
+}
+
+void DriveBase::moveBackIn(float position) {
+  float error = position - getCurrentWheelPosition(); // calculate error
+  float command = movePID->update(error); // get command determined by PID conroller
+                                  //(using Arrow Operator to dereference movePID pointer then accessing update)
+  // adjust speed based on command value (if at postion command will be 0)
+  moveBack(command);
+}
+
+
+// turning fuctions at set angle (deg)
+void DriveBase::turnRightDeg(float angle) {
+
+}
+
+void DriveBase::turnLeftDeg(float angle) {
+
+}
+
 void DriveBase::stop() {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, LOW);
 
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
+}
+
+
+float DriveBase::getCurrentWheelPosition() {
+  return encoder.getAngle() * GEARBOX_RAIO * (WHEEL_DIAMETER * M_PI / 360);
+}
+
+float DriveBase::getCurrentWheelDegree() {
+  return encoder.getAngle() * GEARBOX_RAIO;
 }
 
 // getters and setters
