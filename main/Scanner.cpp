@@ -1,7 +1,5 @@
 //SCANNER CLASS
-//NEEDS: 
-//|-Filled-out header file
-//|-Functions to call 
+//LARGELY COMPLETE
 
 #include "Arduino.h"
 #include "Scanner.h"
@@ -48,17 +46,19 @@ int Scanner::roomScan()
        //if (!mid && (right && left))
         if (mid == 0 && (right == 1 && left == 1))
         {
-          //flame is centered
+          return 1; //Flame is found (bool true) and needs no adjustment, it's centered
         }
         //else if (left && (!right))
         else if (left == 0 && right == 1)
         {
           //Robot must adjust leftwards
+          return 2; //Flame found, adjust left
         }
         //else if (right && (!left))
         else if (right == 0 && left == 1)
         {
           //Robot must adjust rightwards
+          return 3; 
         }
 
         //Re-reads sensor input to update currently existing flame position
@@ -71,9 +71,11 @@ int Scanner::roomScan()
   {
     return 0; //Fire not found, returning bool false value 
   }
-  return 2;
+  return 99; //Means an error was found and the program dropped out of the scope
 }
 
+
+/*
 int Scanner::centering()
 {
 	//Takes in results from a scan and makes adjustments based on which sensors are returning
@@ -85,3 +87,4 @@ void Scanner::extinguish(int flmL, int flmR, int flmM)
 	//Reads and double-checks the readings on each scanner, ensuring a centered target, then
 	//calls a real extinguish function or simply activates the mechanism
 }
+*/
