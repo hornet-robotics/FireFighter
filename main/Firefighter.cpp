@@ -2,12 +2,12 @@
 
 // define pins names and values here is it is easier to track
 // Drivebase pins
-const int motor1Pin1 = 2;
-const int motor1Pin2 = 3;
+const int motor1Pin1 = 6;
+const int motor1Pin2 = 5;
 const int motor2Pin1 = 4;
-const int motor2Pin2 = 5;
-const int pwmPinA = 10;
-const int pwmPinB = 11;
+const int motor2Pin2 = 3;
+const int pwmPinA = 7;
+const int pwmPinB = 2;
 
 
 void Firefighter::init() {

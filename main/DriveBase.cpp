@@ -42,8 +42,8 @@ void DriveBase::moveForward(int speed) {
   digitalWrite(motor1Pin1, HIGH);
   digitalWrite(motor1Pin2, LOW);
 
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);
@@ -53,8 +53,8 @@ void DriveBase::moveBack(int speed) {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, HIGH);
 
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);
@@ -64,8 +64,8 @@ void DriveBase::turnRight(int speed) {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, HIGH);
 
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);
@@ -75,8 +75,8 @@ void DriveBase::turnLeft(int speed) {
   digitalWrite(motor1Pin1, HIGH);
   digitalWrite(motor1Pin2, LOW);
 
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
 
   analogWrite(pwmPin1, speed);
 	analogWrite(pwmPin2, speed);

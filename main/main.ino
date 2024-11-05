@@ -3,12 +3,12 @@
 // create subsystem instances (drive, ultrasonic, ect)
 DriveBase drive;
 
-const int motor1Pin1 = 2;
-const int motor1Pin2 = 3;
+const int motor1Pin1 = 6;
+const int motor1Pin2 = 5;
 const int motor2Pin1 = 4;
-const int motor2Pin2 = 5;
-const int pwmPinA = 10;
-const int pwmPinB = 11;
+const int motor2Pin2 = 3;
+const int pwmPinA = 7;
+const int pwmPinB = 2;
 
 void setup() {
   // put your setup code here, to run once:
@@ -21,5 +21,6 @@ void loop() {
 
   float oneRotation = 4 * 3.14;
 
-  drive.moveBackIn(oneRotation);
+  //drive.moveBackIn(oneRotation);
+  //drive.turnLeft();
 }
