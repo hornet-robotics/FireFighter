@@ -1,21 +1,19 @@
 #pragma once // acts as header gaurd
 
-#include <Arduino.h> // include arduino library
+#include <I2Cdev.h>
 #include <Wire.h> //Wire library for MPU
-#include <MPU6050> //MPU6050 library for Gyroscope
+#include <MPU6050.h> //MPU6050 library for Gyroscope
 
 class Gyroscope {
   
   public:
+  void init();
 
-  void getX();
-  void getY();
-  void getZ();
+  byte getZ();
 
   private:
-    MPU6050 mpu;
-    Vector rawGyro = mpu.readRawGyro();
-    float x = rawGyro.XAxis();
-    float y = rawGyro.YAxis();
-    float z = rawGyro.ZAxis();
+  int16_t ax, ay, az;
+  int16_t gx, gy, gz; //ignore all but gz
+  MPU6050 mpu;
+  byte z;
 };

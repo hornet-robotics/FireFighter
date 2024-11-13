@@ -1,29 +1,14 @@
 #include "Gyroscope.h"
-#include "HardwareSerial.h"
-
-void Gyroscope::init(int p) {
-
+//init and offset to base 130
+void Gyroscope::init() {
   Serial.begin(9600);
   Wire.begin();
-//init MPU6050
-  Serial.println("Initializing MPU6050");
-  if(!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G)){
-    Serial.println("Could not find a valid MPU6050 sensor");
-    while(1);
-  }
-
-//calibrate Gyroscope
-mpu.calibrateGyro();
-mpu.setThreshold(3);
+  mpu.initialize();
+  mpu.setZGyroOffset(150);
 }
-
 //*getters and setters*//
-void Gyroscope::getX(){
-  return x;
-}
-void Gyroscope::getY(){
-  return y;
-}
-void Gyroscope::getZ(){
-  return z;
+byte Gyroscope::getZ(){
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  z = map(gz, -32768, 32768, 0, 255); 
+  return z - 129;
 }
