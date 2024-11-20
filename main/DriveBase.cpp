@@ -136,11 +136,11 @@ void DriveBase::stop() {
 
 
 float DriveBase::getCurrentWheelPosition() {
-  return encoder.getAngle() * GEARBOX_RAIO * (WHEEL_DIAMETER * M_PI / 360);
+  return encoder.getAngle() * ENCODER_RATIO * (WHEEL_DIAMETER * M_PI / 360);
 }
 
 float DriveBase::getCurrentWheelDegree() {
-  return encoder.getAngle() * GEARBOX_RAIO;
+  return encoder.getAngle() * ENCODER_RATIO;
 }
 
 // getters and setters

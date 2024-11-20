@@ -43,8 +43,9 @@ class DriveBase {
 
   private:
 
-  const float GEARBOX_RAIO = 57.7;
-  const float WHEEL_DIAMETER = 4; // in
+  const float GEARBOX_RATIO = 57.7;
+  const float ENCODER_RATIO = 97.03/33.81; // 4 7/8 and 1 3/8
+  const float WHEEL_DIAMETER = 4.875; // in
 
   int globalSpeed = 255; // default is 255 (max speed);
   
