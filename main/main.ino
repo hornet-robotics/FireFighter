@@ -22,11 +22,11 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  float oneRotation = 4 * 3.14;
+  float oneRotation = 4.875 * 3.14;
   //encoder.isMagnetDetected();
   //encoder.getAngle();
-  Serial.println(drive.getCurrentWheelPosition());
+  // Serial.println(drive.getCurrentWheelPosition());
   
-  //drive.moveBackIn(oneRotation);
+  drive.moveBackIn(oneRotation);
   //drive.turnLeft();
 }
