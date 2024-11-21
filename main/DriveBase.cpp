@@ -105,6 +105,10 @@ void DriveBase::moveForwardIn(float position) {
   float command = movePID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
   // adjust speed based on command value (if at postion command will be 0)
+
+  Serial.begin(2000000);
+  Serial.println(command);
+
   moveForward(command);
 }
 

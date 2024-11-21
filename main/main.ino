@@ -16,7 +16,7 @@ void setup() {
   drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
   // encoder.init();
   // encoder.resetAngle();
-  Serial.begin(2000000);
+  //Serial.begin(2000000);
 }
 
 void loop() {
@@ -27,6 +27,6 @@ void loop() {
   //encoder.getAngle();
   // Serial.println(drive.getCurrentWheelPosition());
   
-  drive.moveBackIn(oneRotation);
-  //drive.turnLeft();
+  drive.moveForwardIn(oneRotation);
+  // drive.moveForward();
 }
