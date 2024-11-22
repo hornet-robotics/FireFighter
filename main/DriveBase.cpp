@@ -10,7 +10,9 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
   encoder.resetAngle();
 
   // stup PID
-  movePID = new PIDController(moveP);
+  movePID = new PIDController(moveP, 0, 0);
+  movePID->setInegralSumBounds(-100, 100);
+  movePID->setOutputBounds(-255, 255);
 
   // power pins (+ and -)
   motor1Pin1 = m1p1;
@@ -105,9 +107,6 @@ void DriveBase::moveForwardIn(float position) {
   float command = movePID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
   // adjust speed based on command value (if at postion command will be 0)
-
-  Serial.begin(2000000);
-  Serial.println(command);
 
   moveForward(command);
 }

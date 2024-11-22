@@ -57,7 +57,7 @@ class DriveBase {
   int pwmPin1;
   int pwmPin2;
 
-  float moveP = 0.25;
+  float moveP = 20;
 
   PIDController* movePID; // declare obj using dynamic storage duration method
                           // allows usage of new keyword so obj can be initialized in .ccp init fuction

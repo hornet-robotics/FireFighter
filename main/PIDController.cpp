@@ -4,8 +4,8 @@
 // PIDController contructors
 PIDController::PIDController(float p, float i, float d) {
     this->p = p;
-    this->p = i;
-    this->p = d;
+    this->i = i;
+    this->d = d;
 }
 
 PIDController::PIDController(float p) {
@@ -14,7 +14,7 @@ PIDController::PIDController(float p) {
 
 
 float PIDController::update(float error) {
-    float time = millis(); // get current time
+    float time = micros(); // get current time
     float output = 0; // reset output for this cycle
 
     // proportional
@@ -56,7 +56,10 @@ float PIDController::update(float error) {
             output = outputMin;
     }
 
-    return 200.1;//output;
+    Serial.begin(2000000);
+    Serial.println(output);
+
+    return output;
 }
 
 
