@@ -6,6 +6,9 @@ void Encoder::init() {
     Wire.begin(); //start i2C (establish arduino as conroller/master device)
     // set clock for I2C
     Wire.setClock(800000L);
+
+    // SCL -> Digital 21
+    // SDA -> Digital 20
 }
 
 void Encoder::resetAngle() {
@@ -49,7 +52,7 @@ float Encoder::getAngle() {
     globalAngle = angleSum + angle;
 
     // Serial.begin(2000000);
-    // Serial.println(globalAngle / GEARBOX_RAIO);
+    // Serial.println(globalAngle / (97.03/33.81));
 
     return globalAngle;
 }
@@ -81,10 +84,10 @@ bool Encoder::isMagnetDetected(){
     while(Wire.available() == 0); // returns number of bytes avialable (1)
     int magnetStatus = Wire.read();
 
-    //Serial.begin(2000000);
+    // Serial.begin(2000000);
     //Serial.print("MD status: ");
     //Serial.println(magnetStatus, BIN);
-    //Serial.println(magnetStatus);
+    // Serial.println(magnetStatus);
 
     //MH: Too strong magnet - 100111 - DEC: 39 
     //ML: Too weak magnet - 10111 - DEC: 23     

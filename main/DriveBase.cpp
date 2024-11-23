@@ -10,7 +10,9 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
   encoder.resetAngle();
 
   // stup PID
-  movePID = new PIDController(moveP);
+  movePID = new PIDController(MOVE_P, MOVE_I, 0);
+  movePID->setInegralSumBounds(-INTEGRAL_BOUND, INTEGRAL_BOUND);
+  movePID->setOutputBounds(-OUTPUT_BOUND, OUTPUT_BOUND);
 
   // power pins (+ and -)
   motor1Pin1 = m1p1;
@@ -105,6 +107,7 @@ void DriveBase::moveForwardIn(float position) {
   float command = movePID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
   // adjust speed based on command value (if at postion command will be 0)
+
   moveForward(command);
 }
 
@@ -136,11 +139,12 @@ void DriveBase::stop() {
 
 
 float DriveBase::getCurrentWheelPosition() {
-  return encoder.getAngle() * GEARBOX_RAIO * (WHEEL_DIAMETER * M_PI / 360);
+  return encoder.getAngle() / ENCODER_RATIO * (WHEEL_DIAMETER * M_PI / 360);
 }
 
 float DriveBase::getCurrentWheelDegree() {
-  return encoder.getAngle() * GEARBOX_RAIO;
+  // divide by ratio to counter act gearing of encoder wheel to actual wheel
+  return encoder.getAngle() / ENCODER_RATIO;
 }
 
 // getters and setters
