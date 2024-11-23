@@ -1,11 +1,15 @@
 #include "Ultrasonic.h"
 
 void Ultrasonic::init(int echoPin, int trigPin) {
+    this->echoPin = echoPin;
+    this->trigPin = trigPin;
+
     pinMode(echoPin, INPUT);
     pinMode(trigPin, OUTPUT);
 }
 
-float Ultrasonic::measureDistance() {
+float Ultrasonic::measureDistance() { // TODO: test with drive, the loops might cause delays in position reaction
+                                        // since the loops will add delay between other senser reads such as encoder
     float filterArray[20];
 
     // Taking multiple measurements and store in an array
@@ -41,11 +45,9 @@ float Ultrasonic::measureDistance() {
 
     distance = sum / 10;
 
-    // Serial.begin(2000000);
-    // Serial.print("Distance: ");
-    // Serial.print(distance);
-    // Serial.println(" cm");
+    Serial.begin(2000000);
+    Serial.println(distance / 2.54);
 
     // TODO: consider returning distance in inches (distance = distance / 2.54)
-    return distance;
+    return distance / 2.54;
 }
