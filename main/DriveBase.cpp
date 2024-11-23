@@ -10,9 +10,9 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
   encoder.resetAngle();
 
   // stup PID
-  movePID = new PIDController(moveP, 0, 0);
-  movePID->setInegralSumBounds(-100, 100);
-  movePID->setOutputBounds(-255, 255);
+  movePID = new PIDController(MOVE_P, MOVE_I, 0);
+  movePID->setInegralSumBounds(-INTEGRAL_BOUND, INTEGRAL_BOUND);
+  movePID->setOutputBounds(-OUTPUT_BOUND, OUTPUT_BOUND);
 
   // power pins (+ and -)
   motor1Pin1 = m1p1;

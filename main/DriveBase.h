@@ -57,10 +57,13 @@ class DriveBase {
   int pwmPin1;
   int pwmPin2;
 
-  float moveP = 20;
+  const float MOVE_P = 70;
+  const float MOVE_I = 1;
+  const float INTEGRAL_BOUND = 100;
+  const float OUTPUT_BOUND = 255;
 
   PIDController* movePID; // declare obj using dynamic storage duration method
-                          // allows usage of new keyword so obj can be initialized in .ccp init fuction
+                          // allows usage of new keyword so obj can be initialized in .cpp init fuction
                           // will need to delete obj when not being used to prevent memory leaks
   Encoder encoder;
     

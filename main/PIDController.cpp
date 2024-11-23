@@ -56,8 +56,8 @@ float PIDController::update(float error) {
             output = outputMin;
     }
 
-    Serial.begin(2000000);
-    Serial.println(output);
+    // Serial.begin(2000000);
+    // Serial.println(output);
 
     return output;
 }
