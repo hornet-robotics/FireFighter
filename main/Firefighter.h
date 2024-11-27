@@ -11,6 +11,8 @@ class Firefighter {
     // subsystem instantiation
     DriveBase drive;
     Ultrasonic ultraFrontLeft;
+    Ultrasonic ultraBackLeft;
+    Ultrasonic ultraBackRight;
     Ultrasonic ultraFrontRight;
 
     
