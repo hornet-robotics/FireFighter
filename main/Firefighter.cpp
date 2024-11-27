@@ -14,14 +14,14 @@ const int pwmPinB = 2;
 const int ECHO_PIN0 = 30;
 const int TRIG_PIN0 = 31;
 // back left
-const int ECHO_PIN0 = 32;
-const int TRIG_PIN0 = 33;
+const int ECHO_PIN1 = 32;
+const int TRIG_PIN1 = 33;
 // back right
-const int ECHO_PIN1 = 34;
-const int TRIG_PIN1 = 35;
+const int ECHO_PIN2 = 34;
+const int TRIG_PIN2 = 35;
 // front right
-const int ECHO_PIN1 = 36;
-const int TRIG_PIN1 = 37;
+const int ECHO_PIN3 = 36;
+const int TRIG_PIN3 = 37;
 
 
 void Firefighter::init() {
@@ -30,9 +30,9 @@ void Firefighter::init() {
 
   // init ultrasonics
   ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
-  ultraFrontRight.init(ECHO_PIN1, TRIG_PIN1);
-  ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
-  ultraFrontRight.init(ECHO_PIN1, TRIG_PIN1);
+  ultraBackLeft.init(ECHO_PIN1, TRIG_PIN1);
+  ultraBackRight.init(ECHO_PIN3, TRIG_PIN2);
+  ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
 }
 
 
