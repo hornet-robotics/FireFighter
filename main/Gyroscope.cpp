@@ -5,12 +5,37 @@ void Gyroscope::init() {
   Serial.begin(9600);
   Wire.begin();
   mpu.initialize();
-  mpu.setZGyroOffset(150);
+  if (!mpu.testConnection()) {
+    Serial.println("MPU6050 connection failed");
+    while (1);
+  }
+  long sum = 0;
+  for (int i = 0; i < 100; i++) {
+    int16_t gz = mpu.getRotationZ();
+    sum += gz;
+    delay(10);
+  }
+
+  gzOff = sum / 100.0;
+  lastTime = millis();
 }
 
 //Meant to be used in loop, reads gyro Z (yaw) angular velocity
-byte Gyroscope::getZ(){
-  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-  z = map(gz, -32768, 32768, 0, 255); 
-  return z - 129; //negative values are clockwise
+float Gyroscope::getZ(){
+  gz = mpu.getRotationZ();
+  z = (gz - gzOff) / 131.0;
+  if(abs(z) < 0.45){
+    z = 0;
+  }
+  return z; //negative values are clockwise
+}
+
+float Gyroscope::getAngle(){
+  unsigned long currentTime = millis();
+  float deltaTime = (currentTime - lastTime) / 1000.0; // Convert ms to seconds
+
+  angleZ += getZ() * deltaTime;
+  lastTime = currentTime;
+
+  return angleZ;
 }

@@ -9,11 +9,14 @@ class Gyroscope {
   public:
   void init();
 
-  byte getZ();
+  float getZ();
+  float getAngle();
 
   private:
-  int16_t ax, ay, az; //accel ignore if not used
-  int16_t gx, gy, gz; //ignore all but gz
+  int16_t gz;
   MPU6050 mpu;
-  byte z;
+  float z;
+  float gzOff;
+  unsigned long lastTime;
+  float angleZ;
 };

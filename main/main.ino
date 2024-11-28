@@ -1,20 +1,21 @@
-#include "FanMotor.h"
+#include "Gyroscope.h"
+#include "DriveBase.h"
 
 // create subsystem instances (drive, ultrasonic, ect)
-FanMotor testDrive;
+Gyroscope scope;
+DriveBase testDrive;
 
 void setup() {
   // put your setup code here, to run once:
-  testDrive.init(9);
+  scope.init();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  testDrive.start();
-  stopPause(1000);
-  // testDrive.turnRight();
-  // stopPause(1000);
+  Serial.print("Angle Z: ");
+  Serial.print(scope.getAngle());
+  Serial.println(" degrees");
 
+  delay(50);
 }
 
 // only used for testing
