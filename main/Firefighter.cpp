@@ -8,13 +8,13 @@ const int motor2Pin1 = 4;
 const int motor2Pin2 = 3;
 const int pwmPinA = 7;
 const int pwmPinB = 2;
-
+const int fanpin = 13;
 
 void Firefighter::init() {
   // add subsystem init here
   drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
   scope.init();
-
+  fan.init(fanpin);
 }
 
 

@@ -1,9 +1,11 @@
 #include "Gyroscope.h"
 #include "DriveBase.h"
+#include "FanMotor.h"
 
 // create subsystem instances (drive, ultrasonic, ect)
 DriveBase drive;
 Encoder encoder;
+FanMotor fan;
 
 const int motor1Pin1 = 6;
 const int motor1Pin2 = 5;
@@ -14,10 +16,12 @@ const int pwmPinB = 2;
 
 void setup() {
   // put your setup code here, to run once:
-  drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+  //drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
   // encoder.init();
   // encoder.resetAngle();
-  //Serial.begin(2000000);
+  Serial.begin(2000000);
+  fan.init(13);
+  fan.setSpeed(20);
 }
 
 void loop() {
@@ -30,4 +34,6 @@ void loop() {
   
   // drive.moveForwardIn(oneRotation);
   // drive.moveForward();
+
+  fan.start();
 }
