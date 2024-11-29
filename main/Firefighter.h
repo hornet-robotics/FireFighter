@@ -2,6 +2,7 @@
 
 #include <Arduino.h> // include arduino library
 #include "DriveBase.h"
+#include "Gyroscope.h"
 
 class Firefighter {
 
@@ -9,6 +10,7 @@ class Firefighter {
 
     // subsystem instantiation
     DriveBase drive;
+    Gyroscope scope;
     
     void init(); // create instances of subsystems
 

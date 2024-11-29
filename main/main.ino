@@ -11,16 +11,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Angle Z: ");
-  Serial.print(scope.getAngle());
-  Serial.println(" degrees");
+  Serial.println(scope.getAngle());
 
   delay(50);
-}
-
-// only used for testing
-void stopPause(int time) {
-  delay(time);
-  testDrive.stop();
-  delay(time);
 }

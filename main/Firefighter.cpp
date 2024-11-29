@@ -13,8 +13,8 @@ const int pwmPinB = 11;
 void Firefighter::init() {
   // add subsystem init here
   drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+  scope.init();
 
-  // add ultrasonic, IR, ect init here
 }
 
 
@@ -22,7 +22,7 @@ void Firefighter::HtoA() {
 
   // example of subsystems being used
 
-  while (/*ultrasonic does not detect opening* on right side*/) {
+  while (true) {
     drive.moveForward();
   }
 
