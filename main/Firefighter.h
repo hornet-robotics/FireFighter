@@ -8,42 +8,42 @@ class Firefighter {
 
   public:
 
-    // subsystem instantiation
-    DriveBase drive;
-    Ultrasonic ultraFrontLeft;
-    Ultrasonic ultraBackLeft;
-    Ultrasonic ultraBackRight;
-    Ultrasonic ultraFrontRight;
+  // subsystem instantiation
+  DriveBase drive;
+  Ultrasonic ultraFrontLeft;
+  Ultrasonic ultraBackLeft;
+  Ultrasonic ultraBackRight;
+  Ultrasonic ultraFrontRight;
 
-    
-    void init(); // create instances of subsystems
+  
+  void init(); // create instances of subsystems
 
-    void HtoA();
-    void AtoB();
-    void BtoC();
-    void CtoD();
+  void HtoA();
+  void AtoB();
+  void BtoC();
+  void CtoD();
 
-    void extinguish();
+  void extinguish();
 
-    void AtoH();
-    void BtoH();
-    void CtoH();
-    void DtoH();
+  void AtoH();
+  void BtoH();
+  void CtoH();
+  void DtoH();
 
-    void openingOnRight();
-    void openingOnLeft();
+  void openingOnRight();
+  void openingOnLeft();
 
-    bool flameDetected = false;
+  bool flameDetected = false;
 
-  private: 
-    // units in inches
-    float robotWidth = 0;
-    float robotLength = 0;
-    float robotHieght = 0;
+private: 
+  // units in inches
+  float robotWidth = 0;
+  float robotLength = 0;
+  float robotHieght = 0;
 
-    float sideTolerance = 0;
-    float sideDistance = 0;
+  float sideTolerance = 0;
+  float sideDistance = 0;
 
-    float buffer = 0; // might need to be local var
+  float buffer = 0; // might need to be local var
     
 };

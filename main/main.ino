@@ -13,7 +13,7 @@ const int pwmPinB = 2;
 
 void setup() {
   // put your setup code here, to run once:
-  ultraFrontLeft.init(30, 31);
+  ultraFrontLeft.init(36, 37);
   // Serial.begin(2000000);
   // Serial.begin(9600);
 }
