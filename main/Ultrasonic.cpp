@@ -45,8 +45,8 @@ float Ultrasonic::measureDistance() { // TODO: test with drive, the loops might 
 
     distance = sum / 10;
 
-    Serial.begin(2000000);
-    Serial.println(distance / 2.54);
+    // Serial.begin(2000000);
+    // Serial.println(distance / 2.54);
 
     // TODO: consider returning distance in inches (distance = distance / 2.54)
     return distance / 2.54;
