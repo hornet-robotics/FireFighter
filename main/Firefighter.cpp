@@ -31,7 +31,7 @@ void Firefighter::init() {
   // init ultrasonics
   ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
   ultraBackLeft.init(ECHO_PIN1, TRIG_PIN1);
-  ultraBackRight.init(ECHO_PIN3, TRIG_PIN2);
+  ultraBackRight.init(ECHO_PIN2, TRIG_PIN2);
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
 }
 

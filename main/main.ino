@@ -32,7 +32,7 @@ void setup() {
   // put your setup code here, to run once:
   ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
   ultraBackLeft.init(ECHO_PIN1, TRIG_PIN1);
-  ultraBackRight.init(ECHO_PIN3, TRIG_PIN2);
+  ultraBackRight.init(ECHO_PIN2, TRIG_PIN2);
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
   drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
 
@@ -43,16 +43,17 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  // Serial.println(ultraFrontRight.measureDistance());
+  // Serial.println(ultraBackRight.measureDistance());
 
-  if (ultraFrontRight.measureDistance() > 10 && ultraFrontRight.measureDistance() > 10) {
+  //TODO: response seems too slow, filtering and delay causes significant lag in response
+  if (ultraFrontRight.measureDistance() > 10 && ultraBackRight.measureDistance() > 10) {
     // junction at right
-    drive.turnRightDeg(90);
-    Serial.println("turn"); //TODO: response seems too slow, must fix
+    drive.stop();
+    // Serial.println("turn");
 
   } 
   else {
     drive.moveForward();
-    Serial.println("forward");
+    // Serial.println("forward");
   }
 }
