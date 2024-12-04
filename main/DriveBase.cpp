@@ -11,8 +11,12 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
 
   // stup PID
   movePID = new PIDController(MOVE_P, MOVE_I, 0);
-  movePID->setInegralSumBounds(-INTEGRAL_BOUND, INTEGRAL_BOUND);
-  movePID->setOutputBounds(-OUTPUT_BOUND, OUTPUT_BOUND);
+  movePID->setInegralSumBounds(-MOVE_INTEGRAL_BOUND, MOVE_INTEGRAL_BOUND);
+  movePID->setOutputBounds(-MOVE_OUTPUT_BOUND, MOVE_OUTPUT_BOUND);
+
+  turnPID = new PIDController(TURN_P, TURN_I, 0);
+  turnPID->setInegralSumBounds(-TURN_INTEGRAL_BOUND, TURN_INTEGRAL_BOUND);
+  turnPID->setOutputBounds(-TURN_OUTPUT_BOUND_TURN, TURN_OUTPUT_BOUND_TURN);
 
   // power pins (+ and -)
   motor1Pin1 = m1p1;
