@@ -9,6 +9,9 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
   encoder.init();
   encoder.resetAngle();
 
+  // setup gyroscope
+  gyro.init();
+
   // stup PID
   movePID = new PIDController(MOVE_P, MOVE_I, 0);
   movePID->setInegralSumBounds(-MOVE_INTEGRAL_BOUND, MOVE_INTEGRAL_BOUND);
@@ -105,33 +108,43 @@ void DriveBase::turnLeft() {
   turnLeft(globalSpeed);
 }
 
-// move functions at set position (in)
-void DriveBase::moveForwardIn(float position) {
+
+// PID movment funtions (move and turn)
+void DriveBase::move(float position) {
   float error = position - getCurrentWheelPosition(); // calculate error
   float command = movePID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
   // adjust speed based on command value (if at postion command will be 0)
+  
+  // check if error is pos or neg to determin how to move (pwm set to neg does not switch direction)
+  if (error > 0) {
+    moveForward(command);
+  }
+  else {
+    moveBack(-command); // make negative command positive so it is functional by moveBack
+  }
 
-  moveForward(command);
+  // Serial.begin(2000000);
+  // Serial.println(getCurrentWheelPosition());
+  // Serial.println(command);
 }
 
-void DriveBase::moveBackIn(float position) {
-  float error = position - getCurrentWheelPosition(); // calculate error
-  float command = movePID->update(error); // get command determined by PID conroller
-                                  //(using Arrow Operator to dereference movePID pointer then accessing update)
+void DriveBase::turn(float angle) {
+  float error = angle - gyro.getAngle(); // calculate error
+  float command = turnPID->update(error); // get command determined by PID conroller 
+                                //(using Arrow Operator to dereference movePID pointer then accessing update)
   // adjust speed based on command value (if at postion command will be 0)
-  moveBack(command);
+
+  if (error > 0) {
+    turnRight(command);
+  }
+
+  else {
+    turnLeft(-command);
+  }
 }
 
 
-// turning fuctions at set angle (deg)
-void DriveBase::turnRightDeg(float angle) {
-
-}
-
-void DriveBase::turnLeftDeg(float angle) {
-
-}
 
 void DriveBase::stop() {
   digitalWrite(motor1Pin1, LOW);
@@ -143,12 +156,17 @@ void DriveBase::stop() {
 
 
 float DriveBase::getCurrentWheelPosition() {
-  return encoder.getAngle() / ENCODER_RATIO * (WHEEL_DIAMETER * M_PI / 360);
+  return -encoder.getAngle() / ENCODER_RATIO * (WHEEL_DIAMETER * M_PI / 360);
 }
 
 float DriveBase::getCurrentWheelDegree() {
   // divide by ratio to counter act gearing of encoder wheel to actual wheel
-  return encoder.getAngle() / ENCODER_RATIO;
+  return -encoder.getAngle() / ENCODER_RATIO;
+}
+
+// clockwise is positive
+float DriveBase::getCurrentRobotAngle() {
+  return gyro.getAngle();
 }
 
 // getters and setters

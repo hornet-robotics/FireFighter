@@ -1,9 +1,10 @@
 #pragma once // acts as header gaurd
 
 #include <Arduino.h> // include arduino library
+#include <math.h>
 #include "PIDController.h"
 #include "Encoder.h"
-#include <math.h>
+#include "Gyroscope.h"
 
 class DriveBase {
 
@@ -33,10 +34,15 @@ class DriveBase {
   void turnRightDeg(float angle);
   void turnLeftDeg(float angle);
 
+  // generalized motion functions with PID
+  void move(float position); // position in inches
+  void turn(float angle);
+
   void stop();
 
   float getCurrentWheelPosition();
   float getCurrentWheelDegree();
+  float getCurrentRobotAngle();
 
   void setGlobalSpeed(int pwm);
   int getGlobalSpeed();
@@ -44,7 +50,7 @@ class DriveBase {
   private:
 
   const float GEARBOX_RATIO = 57.7;
-  const float ENCODER_RATIO = 97.03/33.81; // 4 7/8 and 1 3/8
+  const float ENCODER_RATIO = 97/38; // wheel / encoder wheel in mm
   const float WHEEL_DIAMETER = 4.875; // in
 
   int globalSpeed = 255; // default is 255 (max speed);
@@ -57,13 +63,13 @@ class DriveBase {
   int pwmPin1;
   int pwmPin2;
 
-  const float MOVE_P = 70;
-  const float MOVE_I = 1;
-  const float MOVE_INTEGRAL_BOUND = 100;
+  const float MOVE_P = 20;
+  const float MOVE_I = 0;
+  const float MOVE_INTEGRAL_BOUND = 50;
   const float MOVE_OUTPUT_BOUND = 255;
 
-  const float TURN_P = 70;
-  const float TURN_I = 1;
+  const float TURN_P = 70; //TODO: tune PID values
+  const float TURN_I = 0;
   const float TURN_INTEGRAL_BOUND = 100;
   const float TURN_OUTPUT_BOUND_TURN = 255;
 
@@ -72,5 +78,6 @@ class DriveBase {
                           // will need to delete obj when not being used to prevent memory leaks
   PIDController* turnPID;
   Encoder encoder;
+  Gyroscope gyro;
     
 };

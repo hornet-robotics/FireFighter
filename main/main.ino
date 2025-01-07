@@ -16,24 +16,25 @@ const int pwmPinB = 2;
 
 void setup() {
   // put your setup code here, to run once:
-  //drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+  drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
   // encoder.init();
   // encoder.resetAngle();
   Serial.begin(2000000);
-  fan.init(13);
-  fan.setSpeed(20);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
   float oneRotation = 4.875 * 3.14;
-  //encoder.isMagnetDetected();
-  //encoder.getAngle();
-  // Serial.println(drive.getCurrentWheelPosition());
+  // encoder.isMagnetDetected();
+  encoder.getAngle();
+  // Serial.println(encoder.isMagnetDetected());
   
-  // drive.moveForwardIn(oneRotation);
+  drive.turn(90);
   // drive.moveForward();
+  // drive.moveForwardIn(12);
+  Serial.println(drive.getCurrentRobotAngle());
 
-  fan.start();
+
+  //drive.turnLeftDeg(90);
 }

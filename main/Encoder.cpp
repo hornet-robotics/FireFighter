@@ -85,8 +85,8 @@ bool Encoder::isMagnetDetected(){
     int magnetStatus = Wire.read();
 
     // Serial.begin(2000000);
-    //Serial.print("MD status: ");
-    //Serial.println(magnetStatus, BIN);
+    // Serial.print("MD status: ");
+    // Serial.println(magnetStatus, BIN);
     // Serial.println(magnetStatus);
 
     //MH: Too strong magnet - 100111 - DEC: 39 
