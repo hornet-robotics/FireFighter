@@ -12,7 +12,7 @@ class Encoder {
     float getAngle();
     float getWrapAngle();
 
-    bool isMagnetDetected();
+    int isMagnetDetected();
 
     private:
 

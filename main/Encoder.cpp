@@ -74,7 +74,7 @@ float Encoder::getWrapAngle() {
     return wrapAngle;
 }
 
-bool Encoder::isMagnetDetected(){
+int Encoder::isMagnetDetected(){
     Wire.beginTransmission(SENSOR_ADDRESS);
     Wire.write(0x0B); // 0x0C refers to register corresponding to STATUS
     Wire.endTransmission();
@@ -92,8 +92,13 @@ bool Encoder::isMagnetDetected(){
     //MH: Too strong magnet - 100111 - DEC: 39 
     //ML: Too weak magnet - 10111 - DEC: 23     
     //MD: OK magnet - 110111 - DEC: 55
+    // if (magnetStatus != 55) {
+    //   Wire.begin(); //start i2C (establish arduino as conroller/master device)
+    //   // set clock for I2C
+    //   Wire.setClock(800000L);
+    // }
 
-    return magnetStatus == 55;
+    return magnetStatus; // change back to bool
 }
 
 

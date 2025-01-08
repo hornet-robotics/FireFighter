@@ -156,12 +156,11 @@ void DriveBase::stop() {
 
 
 float DriveBase::getCurrentWheelPosition() {
-  return -encoder.getAngle() / ENCODER_RATIO * (WHEEL_DIAMETER * M_PI / 360);
+  return -encoder.getAngle() * (ENCODER_DIAMETER * M_PI / 360);
 }
 
 float DriveBase::getCurrentWheelDegree() {
-  // divide by ratio to counter act gearing of encoder wheel to actual wheel
-  return -encoder.getAngle() / ENCODER_RATIO;
+  return -encoder.getAngle();
 }
 
 // clockwise is positive

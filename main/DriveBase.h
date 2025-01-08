@@ -52,6 +52,7 @@ class DriveBase {
   const float GEARBOX_RATIO = 57.7;
   const float ENCODER_RATIO = 97/38; // wheel / encoder wheel in mm
   const float WHEEL_DIAMETER = 4.875; // in
+  const float ENCODER_DIAMETER = 1.49606; // in
 
   int globalSpeed = 255; // default is 255 (max speed);
   
@@ -63,13 +64,13 @@ class DriveBase {
   int pwmPin1;
   int pwmPin2;
 
-  const float MOVE_P = 20;
-  const float MOVE_I = 0;
+  const float MOVE_P = 40;
+  const float MOVE_I = 1;
   const float MOVE_INTEGRAL_BOUND = 50;
   const float MOVE_OUTPUT_BOUND = 255;
 
-  const float TURN_P = 70; //TODO: tune PID values
-  const float TURN_I = 0;
+  const float TURN_P = 30;
+  const float TURN_I = 0.5;
   const float TURN_INTEGRAL_BOUND = 100;
   const float TURN_OUTPUT_BOUND_TURN = 255;
 

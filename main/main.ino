@@ -26,15 +26,19 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   float oneRotation = 4.875 * 3.14;
-  // encoder.isMagnetDetected();
+  encoder.isMagnetDetected();
   encoder.getAngle();
   // Serial.println(encoder.isMagnetDetected());
   
-  drive.turn(90);
+  drive.turn(180);
   // drive.moveForward();
-  // drive.moveForwardIn(12);
   Serial.println(drive.getCurrentRobotAngle());
+  // Serial.println(drive.getCurrentWheelPosition());
+  // Serial.println(drive.getCurrentWheelPosition());
 
+  // Serial.print(encoder.isMagnetDetected());
+  // Serial.print(", ");
+  // Serial.println(drive.getCurrentWheelPosition());
 
   //drive.turnLeftDeg(90);
 }
