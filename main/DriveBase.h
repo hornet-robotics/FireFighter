@@ -12,6 +12,7 @@ class DriveBase {
 
   void init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB);
 
+  // used to free PID instances
   void freeMemory();
 
   // move function at set speed
@@ -36,14 +37,26 @@ class DriveBase {
 
   // generalized motion functions with PID
   void move(float position); // position in inches
-  void turn(float angle);
+  void turn(float angle); // in degrees
 
   void stop();
 
+  void resetEncoder();
+
+  // get position functions
   float getCurrentWheelPosition();
   float getCurrentWheelDegree();
   float getCurrentRobotAngle();
 
+  // get target functions
+  float getTargetPosition();
+  float getTargetAngle();
+
+  // at target functions
+  bool atTargetPosition();
+  bool atTargetAngle();
+
+  // speed get and set
   void setGlobalSpeed(int pwm);
   int getGlobalSpeed();
 
@@ -55,24 +68,35 @@ class DriveBase {
   const float ENCODER_DIAMETER = 1.49606; // in
 
   int globalSpeed = 255; // default is 255 (max speed);
+
+  float targetPosition;
+  float targetAngle;
   
+  // motor power pins
   int motor1Pin1;
   int motor1Pin2;
   int motor2Pin1;
   int motor2Pin2;
 
+  // motor pwm pins
   int pwmPin1;
   int pwmPin2;
 
+  // move pid vars
   const float MOVE_P = 40;
   const float MOVE_I = 1;
   const float MOVE_INTEGRAL_BOUND = 50;
   const float MOVE_OUTPUT_BOUND = 255;
 
+  // turn pid vars
   const float TURN_P = 30;
   const float TURN_I = 0.5;
   const float TURN_INTEGRAL_BOUND = 100;
   const float TURN_OUTPUT_BOUND_TURN = 255;
+
+  // how close to target can we get before we say we are there
+  const float POSITION_TOLERANCE = 0.5; // in
+  const float ANGLE_TOLERANCE = 1; // deg
 
   PIDController* movePID; // declare obj using dynamic storage duration method
                           // allows usage of new keyword so obj can be initialized in .cpp init fuction

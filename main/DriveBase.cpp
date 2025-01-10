@@ -44,6 +44,7 @@ void DriveBase::init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB)
 // used to prevent memory leaks
 void DriveBase::freeMemory() {
   delete movePID;
+  delete turnPID;
 }
 
 // movement functions at set speed
@@ -108,7 +109,6 @@ void DriveBase::turnLeft() {
   turnLeft(globalSpeed);
 }
 
-
 // PID movment funtions (move and turn)
 void DriveBase::move(float position) {
   float error = position - getCurrentWheelPosition(); // calculate error
@@ -144,8 +144,6 @@ void DriveBase::turn(float angle) {
   }
 }
 
-
-
 void DriveBase::stop() {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, LOW);
@@ -154,6 +152,9 @@ void DriveBase::stop() {
   digitalWrite(motor2Pin2, LOW);
 }
 
+void DriveBase::resetEncoder() {
+  encoder.resetAngle();
+}
 
 float DriveBase::getCurrentWheelPosition() {
   return -encoder.getAngle() * (ENCODER_DIAMETER * M_PI / 360);
@@ -166,6 +167,24 @@ float DriveBase::getCurrentWheelDegree() {
 // clockwise is positive
 float DriveBase::getCurrentRobotAngle() {
   return gyro.getAngle();
+}
+
+float DriveBase::getTargetPosition() {
+  return targetPosition;
+}
+
+float DriveBase::getTargetAngle() {
+  return targetAngle;
+}
+
+// how close to target can we get before we say we are there
+bool DriveBase::atTargetPosition() {
+  return getCurrentWheelPosition() > getTargetPosition() - POSITION_TOLERANCE && getCurrentWheelPosition() < getTargetPosition() + POSITION_TOLERANCE;
+}
+
+// how close to target can we get before we say we are there
+bool DriveBase::atTargetAngle() {
+  return getCurrentRobotAngle() > getTargetAngle() - ANGLE_TOLERANCE && getCurrentRobotAngle() < getTargetAngle() + ANGLE_TOLERANCE;
 }
 
 // getters and setters
