@@ -110,7 +110,8 @@ void DriveBase::turnLeft() {
 }
 
 // PID movment funtions (move and turn)
-void DriveBase::move(float position) {
+void DriveBase::move(float position) { // + forward, - back
+  targetPosition = position;
   float error = position - getCurrentWheelPosition(); // calculate error
   float command = movePID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
@@ -129,7 +130,8 @@ void DriveBase::move(float position) {
   // Serial.println(command);
 }
 
-void DriveBase::turn(float angle) {
+void DriveBase::turn(float angle) { // + right, - left
+  targetAngle = angle;
   float error = angle - gyro.getAngle(); // calculate error
   float command = turnPID->update(error); // get command determined by PID conroller 
                                 //(using Arrow Operator to dereference movePID pointer then accessing update)
@@ -154,6 +156,10 @@ void DriveBase::stop() {
 
 void DriveBase::resetEncoder() {
   encoder.resetAngle();
+}
+
+void DriveBase::resetGyro() {
+  gyro.resetAngle();
 }
 
 float DriveBase::getCurrentWheelPosition() {

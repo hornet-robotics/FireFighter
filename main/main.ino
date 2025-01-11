@@ -14,6 +14,8 @@ const int motor2Pin2 = 3;
 const int pwmPinA = 7;
 const int pwmPinB = 2;
 
+int state = 0;
+
 void setup() {
   // put your setup code here, to run once:
   drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
@@ -29,19 +31,17 @@ void loop() {
   //encoder.getAngle();
   //Serial.println(encoder.getWrapAngle());
 
-  int state = 0;
-
   // switch(state) {
   //   case 0:
-  //     drive.move(12);
+  //     drive.move(6);
   //     if (drive.atTargetPosition()) {
-  //       //drive.resetEncoder();
+  //       drive.resetEncoder();
   //       state++;
   //     }
   //     break;
 
   //   case 1:
-  //     drive.turn(180);
+  //     drive.turn(90);
   //     if (drive.atTargetAngle()) {
   //       drive.resetEncoder();
   //       state++;
@@ -49,22 +49,36 @@ void loop() {
   //     break;
 
   //   case 2:
-  //     drive.move(-12);
+  //     drive.turn(-90);
+  //     if (drive.atTargetAngle()) {
+  //       drive.resetEncoder();
+  //       state++;
+  //     }
+  //     break;
+
+  //   case 3:
+  //     drive.move(-6);
   //     if (drive.atTargetPosition()) {
   //       drive.resetEncoder();
   //       state++;
   //     }
   //     break;
+
+  //   case 4: 
+  //     drive.stop();
+  //     break;
   // }
+
+  if (drive.getCurrentRobotAngle() > 5) {
+    drive.resetGyro();
+  }
 
   // // drive.moveForward();
   Serial.print(drive.getCurrentWheelPosition());
   Serial.print(", ");
-  Serial.println(drive.getCurrentRobotAngle());
-
-  if (drive.getCurrentWheelPosition() > 3) {
-    drive.resetEncoder();
-  }
+  Serial.print(drive.getCurrentRobotAngle());
+  Serial.print(", ");
+  Serial.println(state);
 
   //Serial.println(drive.getCurrentWheelPosition());
 

@@ -11,6 +11,7 @@ class Gyroscope {
 
   float getZ();
   float getAngle();
+  void resetAngle();
 
   private:
   int16_t gz;
@@ -19,4 +20,5 @@ class Gyroscope {
   float gzOff;
   unsigned long lastTime;
   float angleZ;
+  float startAngle = 0;
 };

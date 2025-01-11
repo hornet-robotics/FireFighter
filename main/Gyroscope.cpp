@@ -37,5 +37,9 @@ float Gyroscope::getAngle(){
   angleZ += getZ() * deltaTime;
   lastTime = currentTime;
 
-  return angleZ;
+  return angleZ - startAngle;
+}
+
+void Gyroscope::resetAngle() {
+  startAngle = angleZ;
 }

@@ -36,12 +36,15 @@ class DriveBase {
   void turnLeftDeg(float angle);
 
   // generalized motion functions with PID
+  // note can be used in a global scope where previous positions are accounted for in the next movement or 
+  // user can resent the position/angle every movement to make the command more relative
   void move(float position); // position in inches
   void turn(float angle); // in degrees
 
   void stop();
 
   void resetEncoder();
+  void resetGyro();
 
   // get position functions
   float getCurrentWheelPosition();
