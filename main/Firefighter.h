@@ -2,7 +2,6 @@
 
 #include <Arduino.h> // include arduino library
 #include "DriveBase.h"
-#include "Gyroscope.h"
 #include "FanMotor.h"
 
 class Firefighter {
@@ -11,7 +10,6 @@ class Firefighter {
 
     // subsystem instantiation
     DriveBase drive;
-    Gyroscope gyro;
     FanMotor fan;
     
     void init(); // create instances of subsystems
