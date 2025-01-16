@@ -14,26 +14,80 @@ const int motor2Pin2 = 3;
 const int pwmPinA = 7;
 const int pwmPinB = 2;
 
+int state = 0;
+
 void setup() {
   // put your setup code here, to run once:
-  //drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+  drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
   // encoder.init();
   // encoder.resetAngle();
   Serial.begin(2000000);
-  fan.init(13);
-  fan.setSpeed(20);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  float oneRotation = 4.875 * 3.14;
-  //encoder.isMagnetDetected();
-  //encoder.getAngle();
-  // Serial.println(drive.getCurrentWheelPosition());
-  
-  // drive.moveForwardIn(oneRotation);
-  // drive.moveForward();
+  // encoder.isMagnetDetected();
+  // encoder.getAngle();
+  // Serial.println(encoder.getWrapAngle());
 
-  fan.start();
+  switch(state) {
+    case 0:
+      drive.move(12);
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        state++;
+      }
+      break;
+
+    case 1:
+      drive.turn(90);
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        state++;
+      }
+      break;
+
+    case 2:
+      drive.move(12);
+      if (drive.atTargetPosition()) {
+        state++;
+        drive.stop();
+        delay(500); // solves gyro angle increase during middle of run (see Gyroscope.h)
+      }
+      break;
+
+    case 3:
+      drive.move(0);
+      if (drive.atTargetPosition()) {
+        state++;
+      }
+      break;
+
+    case 4:
+      drive.turn(-90);
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        state++;
+      }
+      break;
+
+    case 5:
+      drive.move(-12);
+      if (drive.atTargetPosition()) {
+        state++;
+      }
+      break;
+
+    case 6: 
+      drive.stop();
+      break;
+  }
+
+  Serial.print(drive.getCurrentWheelPosition());
+  Serial.print(", ");
+  Serial.print(drive.getCurrentRobotAngle());
+  Serial.print(", ");
+  Serial.println(state);
 }
