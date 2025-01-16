@@ -1,13 +1,14 @@
 #include "Firefighter.h"
 
-// define pins names and values here is it is easier to track
+// define pins names and values here, makes it is easier to track
+
 // Drivebase pins
-const int motor1Pin1 = 6;
-const int motor1Pin2 = 5;
-const int motor2Pin1 = 4;
-const int motor2Pin2 = 3;
-const int pwmPinA = 7;
-const int pwmPinB = 2;
+const int MOTOR1_PIN1 = 6; // motor 1 is on right side of robot
+const int MOTOR1_PIN2 = 5;
+const int MOTOR2_PIN1 = 4; // motor 2 is on left side of robot
+const int MOTOR2_PIN2 = 3;
+const int PWM_PINA = 7; // pwm for motor 1
+const int PWM_PINB = 2; // pwm for motor 2
 
 // Ultrasonic sensor pins
 // front left
@@ -23,10 +24,15 @@ const int TRIG_PIN2 = 35;
 const int ECHO_PIN3 = 36;
 const int TRIG_PIN3 = 37;
 
+// extinguisher
+const int FAN_PIN = 13;
+
 
 void Firefighter::init() {
-  // init drive
-  drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+
+  // add subsystem init here
+  drive.init(MOTOR1_PIN1, MOTOR1_PIN2, MOTOR2_PIN1, MOTOR2_PIN2, PWM_PINA, PWM_PINB);
+  fan.init(FAN_PIN);
 
   // init ultrasonics
   ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
@@ -39,6 +45,7 @@ void Firefighter::init() {
 void Firefighter::HtoA() {
 
   // example of subsystems being used
+
 
   while (true/*ultrasonic does not detect opening* on right side*/) {
     drive.moveForward();

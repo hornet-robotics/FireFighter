@@ -11,8 +11,9 @@ void Encoder::init() {
     // SDA -> Digital 20
 }
 
+// subtract curr angle to reset
 void Encoder::resetAngle() {
-    startAngle = (readRawAngle() * 0.08789) -  startAngle;
+    globalAngleStart = globalAngle;
 }
 
 float Encoder::getAngle() {
@@ -54,14 +55,18 @@ float Encoder::getAngle() {
     // Serial.begin(2000000);
     // Serial.println(globalAngle / (97.03/33.81));
 
-    return globalAngle;
+    return globalAngle - globalAngleStart;
 }
 
 float Encoder::getWrapAngle() {
     // convert angle in bits to degrees then track based on set origin
     // angle will wrape from 0 to 360
-    wrapAngle  = readRawAngle() * 360.0f / 4096.0f; // convert to degrees: x bits * (360 degrees per rev / 2^12 bits per rev)
-    wrapAngle = wrapAngle - startAngle;
+    if (!readStartAngle) {
+        startAngle = readRawAngle() * 360.0f / 4096.0f;
+        readStartAngle = true;
+    }
+
+    wrapAngle  = readRawAngle() * 360.0f / 4096.0f - startAngle; // convert to degrees: x bits * (360 degrees per rev / 2^12 bits per rev)
 
     // sometimes angle changes to negative during spin, subtracting on negitive keeps cycle consistent
     if (wrapAngle < 0) {
@@ -74,7 +79,7 @@ float Encoder::getWrapAngle() {
     return wrapAngle;
 }
 
-bool Encoder::isMagnetDetected(){
+int Encoder::isMagnetDetected(){
     Wire.beginTransmission(SENSOR_ADDRESS);
     Wire.write(0x0B); // 0x0C refers to register corresponding to STATUS
     Wire.endTransmission();
@@ -85,15 +90,20 @@ bool Encoder::isMagnetDetected(){
     int magnetStatus = Wire.read();
 
     // Serial.begin(2000000);
-    //Serial.print("MD status: ");
-    //Serial.println(magnetStatus, BIN);
+    // Serial.print("MD status: ");
+    // Serial.println(magnetStatus, BIN);
     // Serial.println(magnetStatus);
 
     //MH: Too strong magnet - 100111 - DEC: 39 
     //ML: Too weak magnet - 10111 - DEC: 23     
     //MD: OK magnet - 110111 - DEC: 55
+    // if (magnetStatus != 55) {
+    //   Wire.begin(); //start i2C (establish arduino as conroller/master device)
+    //   // set clock for I2C
+    //   Wire.setClock(800000L);
+    // }
 
-    return magnetStatus == 55;
+    return magnetStatus; // change back to bool
 }
 
 

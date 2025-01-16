@@ -3,6 +3,7 @@
 #include <Arduino.h> // include arduino library
 #include "DriveBase.h"
 #include "Ultrasonic.h"
+#include "FanMotor.h"
 
 class Firefighter {
 
@@ -15,6 +16,7 @@ class Firefighter {
   Ultrasonic ultraBackRight;
   Ultrasonic ultraFrontRight;
 
+  FanMotor fan;
   
   void init(); // create instances of subsystems
 
@@ -35,7 +37,7 @@ class Firefighter {
 
   bool flameDetected = false;
 
-private: 
+  private: 
   // units in inches
   float robotWidth = 0;
   float robotLength = 0;

@@ -12,14 +12,16 @@ class Encoder {
     float getAngle();
     float getWrapAngle();
 
-    bool isMagnetDetected();
+    int isMagnetDetected();
 
     private:
 
     int lowByte; // raw angle 7:0
     word highByte; // raw angle 11:8
     int rawAngle;
-    float startAngle = 0;
+    float startAngle = 0; // used to remove absolute encoder functionality
+    bool readStartAngle = false;
+    float globalAngleStart = 0; // used to reset global anlge
     float wrapAngle;
     float angleSum = 0;
     float globalAngle;
