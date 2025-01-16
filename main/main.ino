@@ -27,64 +27,67 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  //encoder.isMagnetDetected();
-  //encoder.getAngle();
-  //Serial.println(encoder.getWrapAngle());
+  // encoder.isMagnetDetected();
+  // encoder.getAngle();
+  // Serial.println(encoder.getWrapAngle());
 
-  // switch(state) {
-  //   case 0:
-  //     drive.move(6);
-  //     if (drive.atTargetPosition()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
+  switch(state) {
+    case 0:
+      drive.move(12);
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        state++;
+      }
+      break;
 
-  //   case 1:
-  //     drive.turn(90);
-  //     if (drive.atTargetAngle()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
+    case 1:
+      drive.turn(90);
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        state++;
+      }
+      break;
 
-  //   case 2:
-  //     drive.turn(-90);
-  //     if (drive.atTargetAngle()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
+    case 2:
+      drive.move(12);
+      if (drive.atTargetPosition()) {
+        state++;
+        drive.stop();
+        delay(500); // solves gyro angle increase during middle of run (see Gyroscope.h)
+      }
+      break;
 
-  //   case 3:
-  //     drive.move(-6);
-  //     if (drive.atTargetPosition()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
+    case 3:
+      drive.move(0);
+      if (drive.atTargetPosition()) {
+        state++;
+      }
+      break;
 
-  //   case 4: 
-  //     drive.stop();
-  //     break;
-  // }
+    case 4:
+      drive.turn(-90);
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        state++;
+      }
+      break;
 
-  if (drive.getCurrentRobotAngle() > 5) {
-    drive.resetGyro();
+    case 5:
+      drive.move(-12);
+      if (drive.atTargetPosition()) {
+        state++;
+      }
+      break;
+
+    case 6: 
+      drive.stop();
+      break;
   }
 
-  // // drive.moveForward();
   Serial.print(drive.getCurrentWheelPosition());
   Serial.print(", ");
   Serial.print(drive.getCurrentRobotAngle());
   Serial.print(", ");
   Serial.println(state);
-
-  //Serial.println(drive.getCurrentWheelPosition());
-
-  // Serial.print(encoder.isMagnetDetected());
-  // Serial.print(", ");
-  // Serial.println(drive.getCurrentWheelPosition());
-
-  //drive.turnLeftDeg(90);
 }
