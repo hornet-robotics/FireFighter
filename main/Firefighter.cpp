@@ -88,11 +88,12 @@ void Firefighter::DtoH() {
 
 }
 
-void Firefighter::openingOnRight() {
-
+bool Firefighter::openingOnRight() {
+  return ultraFrontRight.measureDistance() > SIDE_OPENING_TOLERANCE && ultraBackRight.measureDistance() > SIDE_OPENING_TOLERANCE;
 }
 
-void Firefighter::openingOnLeft() {
+bool Firefighter::openingOnLeft() {
+  return ultraFrontLeft.measureDistance() > SIDE_OPENING_TOLERANCE && ultraBackLeft.measureDistance() > SIDE_OPENING_TOLERANCE;
 
 }
 

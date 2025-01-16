@@ -32,8 +32,8 @@ class Firefighter {
   void CtoH();
   void DtoH();
 
-  void openingOnRight();
-  void openingOnLeft();
+  bool openingOnRight();
+  bool openingOnLeft();
 
   bool flameDetected = false;
 
@@ -41,11 +41,11 @@ class Firefighter {
   // units in inches
   float robotWidth = 0;
   float robotLength = 0;
-  float robotHieght = 0;
 
-  float sideTolerance = 0;
-  float sideDistance = 0;
+  const float SIDE_OPENING_TOLERANCE = 20; // cm | used to determine how large value ultrasonic needs to detect to 
+                                                // consider a gap a junction opening
 
-  float buffer = 0; // might need to be local var
+  const float JUNCTION_FORWARD_BUFFER = 5; // in | used to shift robot a bit forward after junction opening so 
+                                                // robot doesn't collide with wall
     
 };

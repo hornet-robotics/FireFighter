@@ -40,8 +40,6 @@ void setup() {
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
   drive.init(MOTOR1_PIN1, MOTOR1_PIN2, MOTOR2_PIN1, MOTOR2_PIN2, PWM_PINA, PWM_PINB);
 
-  // Serial.begin(2000000);
-  Serial.begin(9600);
   // encoder.init();
   // encoder.resetAngle();
   Serial.begin(2000000);
@@ -50,81 +48,48 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  // Serial.println(ultraBackRight.measureDistance());
+  switch(state) {
+    case 0:
+      drive.moveForward();
+      if (ultraFrontRight.measureDistance() > 20 && ultraBackRight.measureDistance() > 20) {
+        state++;
+      }
+      break;
 
-  //TODO: response seems too slow, filtering and delay causes significant lag in response
-  if (ultraFrontRight.measureDistance() > 10 && ultraBackRight.measureDistance() > 10) {
-    // junction at right
-    drive.stop();
-    // Serial.println("turn");
+    case 1:
+      drive.move(5);
+      if (drive.atTargetPosition()) {
+        state++;
+      }
+      break;
 
-  } 
-  else {
-    drive.moveForward();
-    // Serial.println("forward");
+    case 2:
+      drive.turn(90);
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        // drive.resetGyro();
+        state++;
+        drive.stop();
+      }
+      break;
+
+    // case 2:
+    //   drive.move(12);
+    //   if (drive.atTargetPosition()) {
+    //     state++;
+    //     drive.stop();
+    //     // delay(500); // solves gyro angle increase during middle of run (see Gyroscope.h)
+    //   }
+    //   break;
+
+    case 3: 
+      drive.stop();
+      break;
   }
 
-  // encoder.isMagnetDetected();
-  // encoder.getAngle();
-  // Serial.println(encoder.getWrapAngle());
-
-  // switch(state) {
-  //   case 0:
-  //     drive.move(12);
-  //     if (drive.atTargetPosition()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
-
-  //   case 1:
-  //     drive.turn(90);
-  //     if (drive.atTargetAngle()) {
-  //       drive.resetEncoder();
-  //       drive.resetGyro();
-  //       state++;
-  //     }
-  //     break;
-
-  //   case 2:
-  //     drive.move(12);
-  //     if (drive.atTargetPosition()) {
-  //       state++;
-  //       drive.stop();
-  //       delay(500); // solves gyro angle increase during middle of run (see Gyroscope.h)
-  //     }
-  //     break;
-
-  //   case 3:
-  //     drive.move(0);
-  //     if (drive.atTargetPosition()) {
-  //       state++;
-  //     }
-  //     break;
-
-  //   case 4:
-  //     drive.turn(-90);
-  //     if (drive.atTargetAngle()) {
-  //       drive.resetEncoder();
-  //       state++;
-  //     }
-  //     break;
-
-  //   case 5:
-  //     drive.move(-12);
-  //     if (drive.atTargetPosition()) {
-  //       state++;
-  //     }
-  //     break;
-
-  //   case 6: 
-  //     drive.stop();
-  //     break;
-  // }
-
-  // Serial.print(drive.getCurrentWheelPosition());
-  // Serial.print(", ");
-  // Serial.print(drive.getCurrentRobotAngle());
-  // Serial.print(", ");
-  // Serial.println(state);
+  Serial.print(ultraBackRight.measureDistance());
+  Serial.print(", ");
+  Serial.print(drive.getCurrentRobotAngle());
+  Serial.print(", ");
+  Serial.println(state);
 }
