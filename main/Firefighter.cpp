@@ -16,7 +16,6 @@ const int FAN_PIN = 13;
 void Firefighter::init() {
   // add subsystem init here
   drive.init(MOTOR1_PIN1, MOTOR1_PIN2, MOTOR2_PIN1, MOTOR2_PIN2, PWM_PINA, PWM_PINB);
-  gyro.init();
   fan.init(FAN_PIN);
 }
 
