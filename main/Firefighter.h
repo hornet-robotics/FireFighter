@@ -11,7 +11,7 @@ class Firefighter {
 
     // subsystem instantiation
     DriveBase drive;
-    Gyroscope scope;
+    Gyroscope gyro;
     FanMotor fan;
     
     void init(); // create instances of subsystems
