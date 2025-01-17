@@ -41,160 +41,133 @@ void Firefighter::init() {
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
 }
 
-//TODO: consider using Enums instead of int for state values so it is easier to modify algorithm
-
-
 bool Firefighter::HtoA() {
 
-  int state = 0;
 
-  switch (state)
-  {
-  case 0: // Move forward until opening on right side
-    drive.moveForward();
+  switch (stateHtoA) {
 
-    if (openingOnRight()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
+    case MOVE_UNTIL_OPENING: // Move forward until opening on right side
+      drive.moveForward();
 
-  case 1: // shift to avoid colliding with juction after next turn
-    drive.move(JUNCTION_FORWARD_BUFFER);
-
-    if (drive.atTargetPosition()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
-
-  case 2: // Turn 90 degrees clockwise
-    drive.turn(90);
-
-    if (drive.atTargetAngle()) {
-      drive.resetEncoder();
-      drive.resetGyro();
-      state++;
-      drive.stop();
-    }
-    break;
-
-  case 3: // Move forward until opening on right side
-    drive.moveForward();
-
-    if (openingOnRight()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
-
-  case 4: // shift to avoid colliding with juction after next turn
-    drive.move(JUNCTION_FORWARD_BUFFER);
-
-    if (drive.atTargetPosition()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
-
-  case 5: // Turn 90 degrees clockwise
-    drive.turn(90);
-
-    if (drive.atTargetAngle()) {
-      drive.resetEncoder();
-      drive.resetGyro();
-      state++;
-      drive.stop();
-    }
-    break;
-
-  case 6: // Move forward robot length + buffer (enter room)
-    drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
-
-    if (drive.atTargetPosition()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
-
-  case 7: // Turn 90 degrees clockwise (scan room)
-    drive.turn(90);
-
-    if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
-      returnAngle = drive.getCurrentRobotAngle();
-      drive.resetEncoder();
-      drive.resetGyro();
-      state++;
-
-      if (true /* ir.roomScan() != 0 */) {
-        state  = -1; // got to extinguish state
-        flameDetected = true;
+      if (openingOnRight()) {
+        drive.resetEncoder();
+        stateHtoA = SHIFT_FORWARD;
       }
-      else {
-        state++;
+      break;
+
+    case SHIFT_FORWARD: // shift to avoid colliding with juction after next turn
+      drive.move(JUNCTION_FORWARD_BUFFER);
+
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        stateHtoA = TURN_TO_JUNCTION;
+      }
+      break;
+
+    case TURN_TO_JUNCTION: // Turn 90 degrees clockwise
+      drive.turn(90);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        drive.stop();
+
+        if (cycle == 0) {
+          stateHtoA = MOVE_UNTIL_OPENING;
+          cycle++;
+        }
+        else {
+          stateHtoA = ENTER_ROOM;
+        }
+      }
+      break;
+
+    case ENTER_ROOM: // Move forward robot length + buffer (enter room)
+      drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        stateHtoA = SCAN_ROOM;
+      }
+      break;
+
+    case SCAN_ROOM: // Turn 90 degrees clockwise (scan room)
+      drive.turn(90);
+
+      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+        returnAngle = drive.getCurrentRobotAngle();
+        drive.resetEncoder();
+        drive.resetGyro();
+
+        if (true /* ir.roomScan() != 0 */) {
+          stateHtoA  = EXTINGUISH; // got to extinguish state
+          flameDetected = true;
+        }
+        else {
+          stateHtoA = UNSCAN_ROOM;
+        }
+
+      }
+      break;
+
+    case UNSCAN_ROOM:
+      drive.turn(-90);
+
+      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+        returnAngle = drive.getCurrentRobotAngle();
+        drive.resetEncoder();
+        drive.resetGyro();
+
+        if (true /* ir.roomScan() != 0 */) {
+          stateHtoA  = EXTINGUISH; // got to extinguish state
+          flameDetected = true;
+        }
+        else {
+          stateHtoA = TURN_180;
+        }
+      }
+      break;
+
+    case TURN_180:
+      drive.turn(180);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        stateHtoA = LEAVE_ROOM;
+
+      }
+      break;
+
+    case LEAVE_ROOM:
+      drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        stateHtoA = TURN_TO_PATH;
+      }
+      break;
+
+    case TURN_TO_PATH:
+      drive.turn(-90);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        stateHtoA = END;
+
+      }
+      break;
+
+    case END:
+      return true; // complete
+    
+    case EXTINGUISH:
+      if (extinguish()){
+        stateHtoA = TURN_180; // go back and continue after fire detected
       }
 
-    }
-    break;
-
-  case 8:
-    drive.turn(-90);
-
-    if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
-      returnAngle = drive.getCurrentRobotAngle();
-      drive.resetEncoder();
-      drive.resetGyro();
-
-      if (true /* ir.roomScan() != 0 */) {
-        state  = -1; // got to extinguish state
-        flameDetected = true;
-      }
-      else {
-        state++;
-      }
-    }
-    break;
-
-  case 9:
-    drive.turn(180);
-
-    if (drive.atTargetAngle()) {
-      drive.resetEncoder();
-      drive.resetGyro();
-      state++;
-
-    }
-    break;
-
-  case 10:
-    drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
-
-    if (drive.atTargetPosition()) {
-      drive.resetEncoder();
-      state++;
-    }
-    break;
-
-  case 11:
-    drive.turn(-90);
-
-    if (drive.atTargetAngle()) {
-      drive.resetEncoder();
-      drive.resetGyro();
-      state++;
-
-    }
-    break;
-
-  case 12:
-    return true; // complete
-  
-  case -1:
-    if (extinguish()){
-      state = 9; // go back and continue after fire detected
-    }
-
-    break;
+      break;
   
   }
 
@@ -202,7 +175,7 @@ bool Firefighter::HtoA() {
 }
 
 bool Firefighter::AtoB() {
-
+  HtoA();
 }
 
 bool Firefighter::BtoC() {

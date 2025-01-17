@@ -1,6 +1,9 @@
 #include "Ultrasonic.h"
 #include "DriveBase.h"
 #include "FanMotor.h"
+#include "Firefighter.h"
+
+Firefighter firefighter;
 
 // create subsystem instances to test(drive, ultrasonic, ect) 
 Ultrasonic ultraFrontLeft;
@@ -40,50 +43,94 @@ void setup() {
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
   drive.init(MOTOR1_PIN1, MOTOR1_PIN2, MOTOR2_PIN1, MOTOR2_PIN2, PWM_PINA, PWM_PINB);
 
+  firefighter.init();
+
   // encoder.init();
   // encoder.resetAngle();
   Serial.begin(2000000);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
   switch(state) {
     case 0:
-      drive.moveForward();
-      if (ultraFrontRight.measureDistance() > 20 && ultraBackRight.measureDistance() > 20) {
+      
+      if (firefighter.HtoA() && firefighter.isFlameDetected()) {
+        // AtoH
+        state = 4;
+      }
+
+      if (firefighter.HtoA() && !firefighter.isFlameDetected()) {
         state++;
       }
+
       break;
 
     case 1:
-      drive.move(5);
-      if (drive.atTargetPosition()) {
+      
+      if (firefighter.AtoB() && firefighter.isFlameDetected()) {
+        // BtoH
+        state = 5;
+      }
+
+      if (firefighter.AtoB() && !firefighter.isFlameDetected()) {
         state++;
       }
+
       break;
 
     case 2:
-      drive.turn(90);
-      if (drive.atTargetAngle()) {
-        drive.resetEncoder();
-        // drive.resetGyro();
+      
+      if (firefighter.BtoC() && firefighter.isFlameDetected()) {
+        // CtoH
+        state = 6;
+      }
+
+      if (firefighter.BtoC() && !firefighter.isFlameDetected()) {
         state++;
-        drive.stop();
+      }
+
+      break;
+
+    case 3:
+      
+      if (firefighter.CtoD() && firefighter.isFlameDetected()) {
+        // DtoH
+        state = 7;
+      }
+
+      if (firefighter.CtoD() && !firefighter.isFlameDetected()) {
+        state = 8; // flame not found so just stop
+      }
+
+      break;
+
+    case 4:
+      if (firefighter.AtoH()) {
+        state = 8;
       }
       break;
 
-    // case 2:
-    //   drive.move(12);
-    //   if (drive.atTargetPosition()) {
-    //     state++;
-    //     drive.stop();
-    //     // delay(500); // solves gyro angle increase during middle of run (see Gyroscope.h)
-    //   }
-    //   break;
+    case 5:
+      if (firefighter.BtoH()) {
+        state = 8;
+      }
+      break;
 
-    case 3: 
-      drive.stop();
+    case 6: 
+      if (firefighter.CtoH()) {
+        state = 8;
+      }
+      break;
+
+    case 7: 
+      if (firefighter.DtoH()) {
+        state = 8;
+      }
+      break;
+
+    case 8: 
+      firefighter.drive.stop();
       break;
   }
 

@@ -54,4 +54,24 @@ class Firefighter {
                                                 // robot doesn't collide with wall
   
   const float ROOM_FORWARD_BUFFER = 5; // in | used when moving into a room
+
+  // HtoA and AtoB state and cycle declearaction and intitialization
+  int cycle = 0;
+
+  enum StateHtoA {
+    MOVE_UNTIL_OPENING,
+    SHIFT_FORWARD,
+    TURN_TO_JUNCTION,
+    // CYCLE HERE ONCE
+    ENTER_ROOM,
+    SCAN_ROOM, 
+    EXTINGUISH,
+    UNSCAN_ROOM,
+    TURN_180,
+    LEAVE_ROOM,
+    TURN_TO_PATH,
+    END
+  };
+
+  enum StateHtoA stateHtoA = MOVE_UNTIL_OPENING;
 };
