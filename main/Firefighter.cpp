@@ -41,50 +41,195 @@ void Firefighter::init() {
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
 }
 
-
-void Firefighter::HtoA() {
-
-  // example of subsystems being used
+//TODO: consider using Enums instead of int for state values so it is easier to modify algorithm
 
 
-  while (true/*ultrasonic does not detect opening* on right side*/) {
+bool Firefighter::HtoA() {
+
+  int state = 0;
+
+  switch (state)
+  {
+  case 0: // Move forward until opening on right side
     drive.moveForward();
+
+    if (openingOnRight()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 1: // shift to avoid colliding with juction after next turn
+    drive.move(JUNCTION_FORWARD_BUFFER);
+
+    if (drive.atTargetPosition()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 2: // Turn 90 degrees clockwise
+    drive.turn(90);
+
+    if (drive.atTargetAngle()) {
+      drive.resetEncoder();
+      drive.resetGyro();
+      state++;
+      drive.stop();
+    }
+    break;
+
+  case 3: // Move forward until opening on right side
+    drive.moveForward();
+
+    if (openingOnRight()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 4: // shift to avoid colliding with juction after next turn
+    drive.move(JUNCTION_FORWARD_BUFFER);
+
+    if (drive.atTargetPosition()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 5: // Turn 90 degrees clockwise
+    drive.turn(90);
+
+    if (drive.atTargetAngle()) {
+      drive.resetEncoder();
+      drive.resetGyro();
+      state++;
+      drive.stop();
+    }
+    break;
+
+  case 6: // Move forward robot length + buffer (enter room)
+    drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+
+    if (drive.atTargetPosition()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 7: // Turn 90 degrees clockwise (scan room)
+    drive.turn(90);
+
+    if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+      returnAngle = drive.getCurrentRobotAngle();
+      drive.resetEncoder();
+      drive.resetGyro();
+      state++;
+
+      if (true /* ir.roomScan() != 0 */) {
+        state  = -1; // got to extinguish state
+        flameDetected = true;
+      }
+      else {
+        state++;
+      }
+
+    }
+    break;
+
+  case 8:
+    drive.turn(-90);
+
+    if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+      returnAngle = drive.getCurrentRobotAngle();
+      drive.resetEncoder();
+      drive.resetGyro();
+
+      if (true /* ir.roomScan() != 0 */) {
+        state  = -1; // got to extinguish state
+        flameDetected = true;
+      }
+      else {
+        state++;
+      }
+    }
+    break;
+
+  case 9:
+    drive.turn(180);
+
+    if (drive.atTargetAngle()) {
+      drive.resetEncoder();
+      drive.resetGyro();
+      state++;
+
+    }
+    break;
+
+  case 10:
+    drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+
+    if (drive.atTargetPosition()) {
+      drive.resetEncoder();
+      state++;
+    }
+    break;
+
+  case 11:
+    drive.turn(-90);
+
+    if (drive.atTargetAngle()) {
+      drive.resetEncoder();
+      drive.resetGyro();
+      state++;
+
+    }
+    break;
+
+  case 12:
+    return true; // complete
+  
+  case -1:
+    if (extinguish()){
+      state = 9; // go back and continue after fire detected
+    }
+
+    break;
+  
   }
 
-  // continue from here as more subystems are finished...
-
-  // consider using switch statement here?
+  return false; // not complete
 }
 
-void Firefighter::AtoB() {
-
-}
-
-void Firefighter::BtoC() {
+bool Firefighter::AtoB() {
 
 }
 
-void Firefighter::CtoD() {
+bool Firefighter::BtoC() {
 
 }
 
-void Firefighter::extinguish() {
+bool Firefighter::CtoD() {
 
 }
 
-void Firefighter::AtoH() {
+bool Firefighter::extinguish() {
 
 }
 
-void Firefighter::BtoH() {
+bool Firefighter::AtoH() {
 
 }
 
-void Firefighter::CtoH() {
+bool Firefighter::BtoH() {
 
 }
 
-void Firefighter::DtoH() {
+bool Firefighter::CtoH() {
+
+}
+
+bool Firefighter::DtoH() {
 
 }
 
@@ -97,3 +242,6 @@ bool Firefighter::openingOnLeft() {
 
 }
 
+bool Firefighter::isFlameDetected() {
+  return flameDetected;
+}

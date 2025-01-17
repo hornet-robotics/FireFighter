@@ -20,32 +20,38 @@ class Firefighter {
   
   void init(); // create instances of subsystems
 
-  void HtoA();
-  void AtoB();
-  void BtoC();
-  void CtoD();
+  // return true when complete
+  bool HtoA();
+  bool AtoB();
+  bool BtoC();
+  bool CtoD();
 
-  void extinguish();
+  bool extinguish();
 
-  void AtoH();
-  void BtoH();
-  void CtoH();
-  void DtoH();
+  bool AtoH();
+  bool BtoH();
+  bool CtoH();
+  bool DtoH();
 
   bool openingOnRight();
   bool openingOnLeft();
 
-  bool flameDetected = false;
+  bool isFlameDetected();
 
   private: 
-  // units in inches
-  float robotWidth = 0;
-  float robotLength = 0;
+
+  bool flameDetected = false;
+
+  float returnAngle = 0; // "turnAngle" during scan when flame is detected
+
+  const float ROBOT_WIDTH = 33.5; // cm
+  const float ROBOT_LENGTH = 27.5; // cm
 
   const float SIDE_OPENING_TOLERANCE = 20; // cm | used to determine how large value ultrasonic needs to detect to 
                                                 // consider a gap a junction opening
 
   const float JUNCTION_FORWARD_BUFFER = 5; // in | used to shift robot a bit forward after junction opening so 
                                                 // robot doesn't collide with wall
-    
+  
+  const float ROOM_FORWARD_BUFFER = 5; // in | used when moving into a room
 };
