@@ -41,7 +41,7 @@ void Firefighter::init() {
   ultraFrontRight.init(ECHO_PIN3, TRIG_PIN3);
 }
 
-bool Firefighter::HtoA() {
+bool Firefighter::HtoA() { //TODO: in a untested state
 
 
   switch (stateHtoA) {
