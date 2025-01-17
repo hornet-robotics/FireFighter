@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
 
-  switch(state) {
+  switch(state) { //TODO:  in untested state
     case 0:
       
       if (firefighter.HtoA() && firefighter.isFlameDetected()) {
