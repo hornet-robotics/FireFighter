@@ -22,7 +22,7 @@ float PIDController::update(float error) {
 
     if (!firstLoop) { // prevent first loop which will have drastic differeces between time and last time on first loop
         // integral
-        // use trapezoidal rule for integral calculation (a numberical approach to integration instead of analytical)
+        // use trapezoidal rule for integral calculation (a numerical approach to integration instead of analytical)
         // consider using Simpson's Rule
         float deltaTime = time - lastTime;
         sum += (error + lastError) * deltaTime / 2; 

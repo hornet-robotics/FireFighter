@@ -2,46 +2,88 @@
 
 #include <Arduino.h> // include arduino library
 #include "DriveBase.h"
-#include "Gyroscope.h"
+<<<<<<< HEAD
+#include "Ultrasonic.h"
+=======
+>>>>>>> master
 #include "FanMotor.h"
 
 class Firefighter {
 
   public:
 
+<<<<<<< HEAD
+  // subsystem instantiation
+  DriveBase drive;
+  Ultrasonic ultraFrontLeft;
+  Ultrasonic ultraBackLeft;
+  Ultrasonic ultraBackRight;
+  Ultrasonic ultraFrontRight;
+=======
     // subsystem instantiation
     DriveBase drive;
-    Gyroscope scope;
     FanMotor fan;
     
     void init(); // create instances of subsystems
+>>>>>>> master
 
-    void HtoA();
-    void AtoB();
-    void BtoC();
-    void CtoD();
+  FanMotor fan;
+  
+  void init(); // create instances of subsystems
 
-    void extinguish();
+  // return true when complete
+  bool HtoA();
+  bool AtoB();
+  bool BtoC();
+  bool CtoD();
 
-    void AtoH();
-    void BtoH();
-    void CtoH();
-    void DtoH();
+  bool extinguish();
 
-    void openingOnRight();
-    void openingOnLeft();
+  bool AtoH();
+  bool BtoH();
+  bool CtoH();
+  bool DtoH();
 
-    bool flameDetected = false;
+  bool openingOnRight();
+  bool openingOnLeft();
+
+  bool isFlameDetected();
 
   private: 
-    // which units (ask hardware)?
-    float robotWidth = 0;
-    float robotLength = 0;
-    float robotHieght = 0;
 
-    float sideTolerance = 0;
-    float sideDistance = 0;
+  bool flameDetected = false;
 
-    float buffer = 0; // might need to be local var
-    
+  float returnAngle = 0; // "turnAngle" during scan when flame is detected
+
+  const float ROBOT_WIDTH = 33.5; // cm
+  const float ROBOT_LENGTH = 27.5; // cm
+
+  const float SIDE_OPENING_TOLERANCE = 20; // cm | used to determine how large value ultrasonic needs to detect to 
+                                                // consider a gap a junction opening
+
+  const float JUNCTION_FORWARD_BUFFER = 5; // in | used to shift robot a bit forward after junction opening so 
+                                                // robot doesn't collide with wall
+  
+  const float ROOM_FORWARD_BUFFER = 5; // in | used when moving into a room
+
+  // HtoA and AtoB state and cycle declearaction and intitialization
+  int cycle = 0;
+
+  enum StateHtoA {
+    MOVE_UNTIL_OPENING,
+    SHIFT_FORWARD,
+    TURN_TO_JUNCTION,
+    // CYCLE HERE ONCE
+    ENTER_ROOM,
+    SCAN_ROOM, 
+    EXTINGUISH,
+    UNSCAN_ROOM,
+    TURN_180,
+    LEAVE_ROOM,
+    TURN_TO_PATH,
+    END
+  };
+
+  enum StateHtoA stateHtoA = MOVE_UNTIL_OPENING;
 };
+
