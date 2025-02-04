@@ -23,6 +23,6 @@ void FanMotor::setSpeed(int per){
   speed = per;
 }
 
-void FanMotor::getSpeed(){
+int FanMotor::getSpeed(){
   return speed;
 }

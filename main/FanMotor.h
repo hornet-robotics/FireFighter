@@ -13,7 +13,7 @@ class FanMotor {
   void stop();
 
   void setSpeed(int per); //set speed, [-50 = fully counter-clock], [50 = fully clockwise]
-  void getSpeed();
+  int getSpeed();
 
   private:
     int speed = -10; 

@@ -1,26 +1,39 @@
 #include "Gyroscope.h"
 #include "DriveBase.h"
+#include "FanMotor.h"
 
 // create subsystem instances (drive, ultrasonic, ect)
-Gyroscope scope;
-DriveBase testDrive;
+DriveBase drive;
+Encoder encoder;
+FanMotor fan;
+
+const int motor1Pin1 = 6;
+const int motor1Pin2 = 5;
+const int motor2Pin1 = 4;
+const int motor2Pin2 = 3;
+const int pwmPinA = 7;
+const int pwmPinB = 2;
 
 void setup() {
   // put your setup code here, to run once:
-  scope.init();
+  //drive.init(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, pwmPinA, pwmPinB);
+  // encoder.init();
+  // encoder.resetAngle();
+  Serial.begin(2000000);
+  fan.init(13);
+  fan.setSpeed(20);
 }
 
 void loop() {
-  Serial.print("Angle Z: ");
-  Serial.print(scope.getAngle());
-  Serial.println(" degrees");
+  // put your main code here, to run repeatedly:
 
-  delay(50);
-}
+  float oneRotation = 4.875 * 3.14;
+  //encoder.isMagnetDetected();
+  //encoder.getAngle();
+  // Serial.println(drive.getCurrentWheelPosition());
+  
+  // drive.moveForwardIn(oneRotation);
+  // drive.moveForward();
 
-// only used for testing
-void stopPause(int time) {
-  delay(time);
-  testDrive.stop();
-  delay(time);
+  fan.start();
 }
