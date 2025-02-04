@@ -22,9 +22,6 @@ void Firefighter::HtoA() {
 
   // example of subsystems being used
 
-  while (/*ultrasonic does not detect opening* on right side*/) {
-    drive.moveForward();
-  }
 
   // continue from here as more subystems are finished...
 
