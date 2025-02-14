@@ -2,31 +2,19 @@
 
 #include <Arduino.h> // include arduino library
 #include "DriveBase.h"
-<<<<<<< HEAD
 #include "Ultrasonic.h"
-=======
->>>>>>> master
 #include "FanMotor.h"
 
 class Firefighter {
 
   public:
 
-<<<<<<< HEAD
   // subsystem instantiation
   DriveBase drive;
   Ultrasonic ultraFrontLeft;
   Ultrasonic ultraBackLeft;
   Ultrasonic ultraBackRight;
   Ultrasonic ultraFrontRight;
-=======
-    // subsystem instantiation
-    DriveBase drive;
-    FanMotor fan;
-    
-    void init(); // create instances of subsystems
->>>>>>> master
-
   FanMotor fan;
   
   void init(); // create instances of subsystems
