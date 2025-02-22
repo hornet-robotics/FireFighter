@@ -18,15 +18,12 @@ class Firefighter {
   Ultrasonic ultraFrontRight;
 
     // subsystem instantiation
-    DriveBase drive;
-    FanMotor fan;
-    Scanner scan;
-
-    void init(); // create instances of subsystems
-
+  DriveBase drive;
   FanMotor fan;
-  
+  Scanner scan;
+
   void init(); // create instances of subsystems
+	       
 
   // return true when complete
   bool HtoA();
