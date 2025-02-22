@@ -29,12 +29,18 @@ const int TRIG_PIN3 = 37;
 // extinguisher
 const int FAN_PIN = 13;
 
+//scanner, flame sensor pins NOTE: ENSURE POTENTIOMETER OF MIDDLE SENSOR IS MAX, L/R SENSORS ARE 2/3RDS OF MAX STRENGTH TO CONTROL GREYAREA (L AND R BUT NO MID)
+const int SCAN_PIN_L = 42;
+const int SCAN_PIN_R = 44;
+const int SCAN_PIN_M = 46;
+
 
 void Firefighter::init() {
 
   // add subsystem init here
   drive.init(MOTOR1_PIN1, MOTOR1_PIN2, MOTOR2_PIN1, MOTOR2_PIN2, PWM_PINA, PWM_PINB);
   fan.init(FAN_PIN);
+  scan.init(SCAN_PIN_L, SCAN_PIN_R, SCAN_PIN_M);
 
   // init ultrasonics
   ultraFrontLeft.init(ECHO_PIN0, TRIG_PIN0);
@@ -96,12 +102,12 @@ bool Firefighter::HtoA() { //TODO: in a untested state
     case SCAN_ROOM: // Turn 90 degrees clockwise (scan room)
       drive.turn(90);
 
-      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+      if (drive.atTargetAngle() || scan.roomScan() != 0) {
         returnAngle = drive.getCurrentRobotAngle();
         drive.resetEncoder();
         drive.resetGyro();
 
-        if (true /* ir.roomScan() != 0 */) {
+        if (scan.roomScan() != 0) {
           stateHtoA  = EXTINGUISH; // got to extinguish state
           flameDetected = true;
         }
@@ -115,12 +121,12 @@ bool Firefighter::HtoA() { //TODO: in a untested state
     case UNSCAN_ROOM:
       drive.turn(-90);
 
-      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+      if (drive.atTargetAngle() || scan.roomScan() != 0) {
         returnAngle = drive.getCurrentRobotAngle();
         drive.resetEncoder();
         drive.resetGyro();
 
-        if (true /* ir.roomScan() != 0 */) {
+        if (scan.roomScan() != 0) {
           stateHtoA  = EXTINGUISH; // got to extinguish state
           flameDetected = true;
         }
@@ -189,8 +195,46 @@ bool Firefighter::CtoD() {
 }
 
 bool Firefighter::extinguish() {
+  int extCounter = 0; //Counts how many times the robot adjusts while extinguishing the flame
+  int greyCounter = 0; //Counts how many times the robot adjusts for the grey area
+	float activeAngle = -999; //activeAngle is used to send and recieve angle used for adjusting robot,
+  //starting value of -999 is flag for centering() function in Scanner class
+	
+	//TO DO: Create system to (start by) accepting the first turn value from centering()
+	//Save the value before sending it, then call centering, check if flame is centered after the turn
+	//	if true, saves the turn angle and calls function to turn on extuinshing method
+	//	if false, takes value returned and calls drive.turn() again
+	//
+  while (scan.roomScan())
+  {
+    activeAngle = scan.centering(activeAngle);
 
+    if (activeAngle == -888) //FLAG VALUE, tells robot to back up (flame found in scanner grey area)
+    {
+      drive.move(1);
+      greyCounter++;
+      activeAngle = scan.Centering(-888);
+    } 
+    else if (activeAngle == 0)
+    {
+      fan.start();
+      //delay(100); //Check syntax
+      while (scan.roomScan)
+      {
+        drive.move(3);
+        extCounter++;
+      }
+      drive.turn(scan.centering(-777));
+      drive.move(-1  * ((extCounter * 3) + (greyCounter * 1))); //Combines total movement while adjusting to find the flame, used to return to entry position
+    }
+    else
+    {
+      drive.turn(activeAngle);
+    }
+  }
+  return true; //ONLY WHEN FLAME IS NO LONGER FOUND
 }
+
 
 bool Firefighter::AtoH() {
 
