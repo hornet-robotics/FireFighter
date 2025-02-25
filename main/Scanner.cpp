@@ -29,11 +29,12 @@ bool Scanner::roomScan()
 	}
 }
 //FLAG VALUES USED IN CENTERING():
-//-999 - Used on the first scan through to initialize the robot properly based on flame location
-//-888 - Used to tell the robot to back up, used if flame is deteced in the scanner grey areas 
+float firstRun = -999; // Used on the first scan through to initialize the robot properly based on flame location
+float greyArea = -888; // Used to tell the robot to back up, used if flame is deteced in the scanner grey areas 
 	//Scanner Grey areas are two regions slightly to left or right of middle scanner in which both left AND right are triggered
 	//Where the robot cannot accurately determine which direction to move next
-//-777 - Used only when flame has been succesfully extinguished, confirms the robot can now reset it's movement
+float flameExt = -777; // Used only when flame has been succesfully extinguished, confirms the robot can now reset it's movement
+float flameCentered = 0;
 
 float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND BEYOND, NEED TO FINALIZE
 					//MATH FOR RETAINING AND SENDING REVERSION ANGLE AFTER FLAME 
@@ -43,7 +44,7 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 	RCheck = digitalRead(sensRight);
 	MCheck = digitalRead(sensMid);
 
-	if ((inAngle == -999 || inAngle == -888) && (MCheck) && (!RCheck || !LCheck)) //Only runs on first run through or flag values to keep revAngle accurate
+	if ((inAngle == firstRun || inAngle == greyArea) && (MCheck) && (!RCheck || !LCheck)) //Only runs on first run through or flag values to keep revAngle accurate
 	{
 		if (!RCheck && LCheck)
 		{
@@ -59,14 +60,14 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 		}
 		else if (!LCheck && !RightCheck) 
 		{
-			return -888; //FLAG VALUE, TELLS ROBOT TO BACK UP A BIT
+			return greyArea; //FLAG VALUE, TELLS ROBOT TO BACK UP A BIT
 		}
 	}
-	else if ((inAngle = -999 || inAngle == -888) && !MCheck) //Runs if after backing up, OR on the first scan, the flame is centered
+	else if ((inAngle = firstRun || inAngle == greyArea) && !MCheck) //Runs if after backing up, OR on the first scan, the flame is centered
 	{
-		return 0;
+		return flameCentered;
 	}
-	else if (inAngle == -777) //FLAG VALUE, Flame has been eliminated and robot must now correct and leave
+	else if (inAngle == flameExt) //FLAG VALUE, Flame has been eliminated and robot must now correct and leave
 	{
 		return (revAngle * -1);
 	}
@@ -76,7 +77,7 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 	//revAngle = inAngle;
 	if (!MCheck)
 	{
-		if (inAngle == -999)
+		if (inAngle == firstRun)
 		{
 			revAngle = 0;
 		}
@@ -84,7 +85,7 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 
 		if ((!RCheck && !LCheck) || (RCheck && LCheck))
 		{
-			return 0; //Flame is centered
+			return flameCentered; //Flame is centered
 		}
 		else if (!RCheck && LCheck)
 		{
