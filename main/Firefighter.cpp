@@ -197,23 +197,25 @@ bool Firefighter::CtoD() {
 bool Firefighter::extinguish() {
   int extCounter = 0; //Counts how many times the robot adjusts while extinguishing the flame
   int greyCounter = 0; //Counts how many times the robot adjusts for the grey area
-	float activeAngle = -999; //activeAngle is used to send and recieve angle used for adjusting robot,
-  //starting value of -999 is flag for centering() function in Scanner class
 	
-	//TO DO: Create system to (start by) accepting the first turn value from centering()
-	//Save the value before sending it, then call centering, check if flame is centered after the turn
-	//	if true, saves the turn angle and calls function to turn on extuinshing method
-	//	if false, takes value returned and calls drive.turn() again
-	//
+  //FLAG VALUES FROM SCANNER CLASS
+        float firstRun = -999;
+        float greyArea = -888;
+        float flameExt = -777;
+        float flameCentered = 0; //Check Scanner.cpp for explanations
+
+  	float activeAngle = firstRun; //activeAngle is used to send and recieve angle used for adjusting robot, 
+			    //starting value of -999 is flag for centering() function in Scanner class
+
   while (scan.roomScan())
   {
     activeAngle = scan.centering(activeAngle);
 
-    if (activeAngle == -888) //FLAG VALUE, tells robot to back up (flame found in scanner grey area)
+    if (activeAngle == greyArea) //FLAG VALUE, tells robot to back up (flame found in scanner grey area)
     {
       drive.move(1);
       greyCounter++;
-      activeAngle = scan.Centering(-888);
+      activeAngle = scan.Centering(greyArea);
     } 
     else if (activeAngle == 0)
     {
@@ -221,10 +223,10 @@ bool Firefighter::extinguish() {
       //delay(100); //Check syntax
       while (scan.roomScan)
       {
-        drive.move(3);
+        drive.move(1);
         extCounter++;
       }
-      drive.turn(scan.centering(-777));
+      drive.turn(scan.centering(flameExt));
       drive.move(-1  * ((extCounter * 3) + (greyCounter * 1))); //Combines total movement while adjusting to find the flame, used to return to entry position
     }
     else
