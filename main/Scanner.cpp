@@ -63,7 +63,7 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 			return greyArea; //FLAG VALUE, TELLS ROBOT TO BACK UP A BIT
 		}
 	}
-	else if ((inAngle = firstRun || inAngle == greyArea) && !MCheck) //Runs if after backing up, OR on the first scan, the flame is centered
+	else if ((inAngle == firstRun || inAngle == greyArea) && !MCheck) //Runs if after backing up, OR on the first scan, the flame is centered
 	{
 		return flameCentered;
 	}
