@@ -55,88 +55,92 @@ void loop() {
   switch(state) { //TODO:  in untested state
     case 0:
       
-      if (firefighter.HtoA() && firefighter.isFlameDetected()) {
-        // AtoH
-        state = 4;
-      }
+      // if (firefighter.HtoA() && firefighter.isFlameDetected()) {
+      //   // AtoH
+      //   state = 4;
+      // }
 
-      if (firefighter.HtoA() && !firefighter.isFlameDetected()) {
+      if (firefighter.HtoA()) {
         state++;
       }
 
       break;
 
     case 1:
-      
-      if (firefighter.AtoB() && firefighter.isFlameDetected()) {
-        // BtoH
-        state = 5;
-      }
+
+      // if (firefighter.AtoB() && firefighter.isFlameDetected()) {
+      //   // BtoH
+      //   state = 5;
+      // }
 
       if (firefighter.AtoB() && !firefighter.isFlameDetected()) {
+        drive.stop();
         state++;
       }
 
       break;
 
-    case 2:
+  //   case 2:
       
-      if (firefighter.BtoC() && firefighter.isFlameDetected()) {
-        // CtoH
-        state = 6;
-      }
+  //     if (firefighter.BtoC() && firefighter.isFlameDetected()) {
+  //       // CtoH
+  //       state = 6;
+  //     }
 
-      if (firefighter.BtoC() && !firefighter.isFlameDetected()) {
-        state++;
-      }
+  //     if (firefighter.BtoC() && !firefighter.isFlameDetected()) {
+  //       state++;
+  //     }
 
-      break;
+  //     break;
 
-    case 3:
+  //   case 3:
       
-      if (firefighter.CtoD() && firefighter.isFlameDetected()) {
-        // DtoH
-        state = 7;
-      }
+  //     if (firefighter.CtoD() && firefighter.isFlameDetected()) {
+  //       // DtoH
+  //       state = 7;
+  //     }
 
-      if (firefighter.CtoD() && !firefighter.isFlameDetected()) {
-        state = 8; // flame not found so just stop
-      }
+  //     if (firefighter.CtoD() && !firefighter.isFlameDetected()) {
+  //       state = 8; // flame not found so just stop
+  //     }
 
-      break;
+  //     break;
 
-    case 4:
-      if (firefighter.AtoH()) {
-        state = 8;
-      }
-      break;
+  //   case 4:
+  //     if (firefighter.AtoH()) {
+  //       state = 8;
+  //     }
+  //     break;
 
-    case 5:
-      if (firefighter.BtoH()) {
-        state = 8;
-      }
-      break;
+  //   case 5:
+  //     if (firefighter.BtoH()) {
+  //       state = 8;
+  //     }
+  //     break;
 
-    case 6: 
-      if (firefighter.CtoH()) {
-        state = 8;
-      }
-      break;
+  //   case 6: 
+  //     if (firefighter.CtoH()) {
+  //       state = 8;
+  //     }
+  //     break;
 
-    case 7: 
-      if (firefighter.DtoH()) {
-        state = 8;
-      }
-      break;
+  //   case 7: 
+  //     if (firefighter.DtoH()) {
+  //       state = 8;
+  //     }
+  //     break;
 
-    case 8: 
-      firefighter.drive.stop();
-      break;
+  //   case 8: 
+  //     firefighter.drive.stop();
+  //     break;
   }
 
-  Serial.print(ultraBackRight.measureDistance());
-  Serial.print(", ");
-  Serial.print(drive.getCurrentRobotAngle());
-  Serial.print(", ");
-  Serial.println(state);
+    Serial.println(state);
+
+  // Serial.print(ultraBackRight.measureDistance());
+  // Serial.print(", ");
+  // Serial.print(drive.getCurrentRobotAngle());
+  // Serial.print(", ");
+  // Serial.println(state);
 }
+
