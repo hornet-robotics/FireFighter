@@ -15,6 +15,7 @@ class Firefighter {
   Ultrasonic ultraBackLeft;
   Ultrasonic ultraBackRight;
   Ultrasonic ultraFrontRight;
+
   FanMotor fan;
   
   void init(); // create instances of subsystems
@@ -37,6 +38,24 @@ class Firefighter {
 
   bool isFlameDetected();
 
+  // enum StateHtoA {
+  //   MOVE_UNTIL_OPENING,
+  //   SHIFT_FORWARD,
+  //   TURN_TO_JUNCTION,
+  //   // CYCLE HERE ONCE
+  //   ENTER_ROOM,
+  //   SCAN_ROOM, 
+  //   EXTINGUISH,
+  //   UNSCAN_ROOM,
+  //   TURN_180,
+  //   LEAVE_ROOM,
+  //   TURN_TO_PATH,
+  //   END
+  // };
+
+  // enum StateHtoA stateHtoA = MOVE_UNTIL_OPENING;
+
+
   private: 
 
   bool flameDetected = false;
@@ -49,7 +68,7 @@ class Firefighter {
   const float SIDE_OPENING_TOLERANCE = 20; // cm | used to determine how large value ultrasonic needs to detect to 
                                                 // consider a gap a junction opening
 
-  const float JUNCTION_FORWARD_BUFFER = 5; // in | used to shift robot a bit forward after junction opening so 
+  const float JUNCTION_FORWARD_BUFFER = 4; // in | used to shift robot a bit forward after junction opening so 
                                                 // robot doesn't collide with wall
   
   const float ROOM_FORWARD_BUFFER = 5; // in | used when moving into a room
@@ -61,6 +80,7 @@ class Firefighter {
     MOVE_UNTIL_OPENING,
     SHIFT_FORWARD,
     TURN_TO_JUNCTION,
+    BEFORE_HALLWAY,
     // CYCLE HERE ONCE
     ENTER_ROOM,
     SCAN_ROOM, 
