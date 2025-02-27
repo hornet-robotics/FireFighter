@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
 
-  firefighter.HtoA()
+  firefighter.HtoA();
         
   //Serial.println(state);
 
