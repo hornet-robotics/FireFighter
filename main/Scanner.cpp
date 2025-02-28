@@ -58,7 +58,7 @@ float Scanner::centering(float inAngle) //TODO - FINISH LOGIC FOR 2nd CHECKS AND
 			revAngle = 60;
 			return sendAngle;
 		}
-		else if (!LCheck && !RightCheck) 
+		else if (!LCheck && !RCheck) 
 		{
 			return greyArea; //FLAG VALUE, TELLS ROBOT TO BACK UP A BIT
 		}
