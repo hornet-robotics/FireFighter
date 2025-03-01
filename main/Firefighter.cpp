@@ -188,6 +188,118 @@ bool Firefighter::AtoB() {
 }
 
 bool Firefighter::BtoC() {
+  switch (stateHtoA) {
+    case MOVE_UNTIL_OPENING: // Move forward until opening on right side
+      drive.moveForward();
+
+      if (openingOnRight()) {
+        drive.resetEncoder();
+        stateHtoA = SHIFT_FORWARD;
+      }
+      break;
+    
+    case SHIFT_FORWARD: 
+    // shift to avoid colliding with juction after next turn
+      drive.move(JUNCTION_FORWARD_BUFFER);
+
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        stateHtoA = TURN_TO_JUNCTION;
+      }
+      break;
+
+    case TURN_TO_JUNCTION: // Turn 90 degrees clockwise
+      drive.turn(90);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        stateHtoA = ENTER_ROOM;
+      }
+      break;
+
+    case ENTER_ROOM: // Move forward robot length + buffer (enter room)
+    drive.stop();
+      // drive.move((ROBOT_LENGTH / 2.54) + ROOM_FORWARD_BUFFER);
+
+      // if (drive.atTargetPosition()) {
+      //   drive.resetEncoder();
+      //   stateHtoA = SCAN_ROOM;
+      // }
+      break;
+
+    case SCAN_ROOM: // Turn 90 degrees clockwise (scan room)
+      drive.turn(90);
+
+      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+        returnAngle = drive.getCurrentRobotAngle();
+        drive.resetEncoder();
+        drive.resetGyro();
+
+        if (false /* ir.roomScan() != 0 */) {
+          stateHtoA  = EXTINGUISH; // got to extinguish state
+          flameDetected = true;
+        }
+        else {
+          stateHtoA = UNSCAN_ROOM;
+        }
+
+      }
+      break;
+
+    case UNSCAN_ROOM:
+      drive.turn(-90);
+
+      if (drive.atTargetAngle() /* || ir.roomScan() != 0 */) {
+        returnAngle = drive.getCurrentRobotAngle();
+        drive.resetEncoder();
+        drive.resetGyro();
+
+        if (false /* ir.roomScan() != 0 */) {
+          stateHtoA  = EXTINGUISH; // got to extinguish state
+          flameDetected = true;
+        }
+        else {
+          stateHtoA = TURN_180;
+        }
+      }
+      break;
+
+    case TURN_180:
+      drive.turn(180);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        stateHtoA = LEAVE_ROOM;
+
+      }
+      break;
+
+    case LEAVE_ROOM:
+      drive.move((ROBOT_LENGTH / 2.54) + ROOM_FORWARD_BUFFER);
+
+      if (drive.atTargetPosition()) {
+        drive.resetEncoder();
+        stateHtoA = TURN_TO_PATH;
+      }
+      break;
+
+    case TURN_TO_PATH:
+      drive.turn(-90);
+
+      if (drive.atTargetAngle()) {
+        drive.resetEncoder();
+        drive.resetGyro();
+        stateHtoA = END;
+
+      }
+      break;
+
+    case END:
+      return true; // complete
+    }
+    return false; // not complete
 
 }
 

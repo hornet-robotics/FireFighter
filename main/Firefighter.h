@@ -94,4 +94,3 @@ class Firefighter {
 
   enum StateHtoA stateHtoA = MOVE_UNTIL_OPENING;
 };
-
