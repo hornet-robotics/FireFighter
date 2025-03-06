@@ -132,8 +132,8 @@ int Encoder::readRawAngle() {
         return -1; // helps with error checking
     }
 
-    uint8_t msb = Wire.read(); // most significant byte
-    uint8_t lsb = Wire.read(); // least significant byte
+    uint8_t msb = Wire.read(); // most significant byte. Read MSB (0x0C)
+    uint8_t lsb = Wire.read(); // least significant byte. Read LSB (0x0D)
 
     // shift msb by 8 bits to make room for lsb, use or to combine shifted msb and lsb
     // and with 0x0FFF (00001111 11111111) to save only lower 12 bit values
