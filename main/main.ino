@@ -52,9 +52,7 @@ void setup() {
 
 void loop() {
 
-  //firefighter.HtoA();
- // firefighter.BtoC();
-
+  firefighter.HtoA();
         
   // Serial.println(drive.encoder.isMagnetDetected());
   // Serial.println("hih hjhi");
