@@ -34,6 +34,7 @@ const int SCAN_PIN_L = 42;
 const int SCAN_PIN_R = 44;
 const int SCAN_PIN_M = 46;
 
+
 void Firefighter::init() {
 
   // add subsystem init here
@@ -49,7 +50,6 @@ void Firefighter::init() {
 }
 
 bool Firefighter::HtoA() { //TODO: in a untested state
-
 
   switch (stateHtoA) {
 
@@ -105,7 +105,6 @@ bool Firefighter::HtoA() { //TODO: in a untested state
         returnAngle = drive.getCurrentRobotAngle();
         drive.resetEncoder();
         drive.resetGyro();
-
 
         if (scan.roomScan() != 0) {
           stateHtoA  = EXTINGUISH; // got to extinguish state
@@ -198,6 +197,9 @@ bool Firefighter::extinguish() {
   int extCounter = 0; //Counts how many times the robot adjusts while extinguishing the flame
   int greyCounter = 0; //Counts how many times the robot adjusts for the grey area
 	
+// drive.move(1);
+// drive.move(-1);
+
   //FLAG VALUES FROM SCANNER CLASS
         float firstRun = -999;
         float greyArea = -888;
@@ -213,29 +215,6 @@ bool Firefighter::extinguish() {
 
     if (activeAngle == greyArea) //FLAG VALUE, tells robot to back up (flame found in scanner grey area)
     {
-      drive.move(-1);
-      greyCounter++;
-      activeAngle = scan.Centering(greyArea);
-    } 
-    else if (activeAngle == 0)
-    {
-      fan.start();
-      //delay(100); //Check syntax
-      while (scan.roomScan)
-      {
-        drive.move(1);
-        extCounter++;
-      }
-      drive.turn(scan.centering(flameExt));
-      drive.move(-1  * ((extCounter * 3) + (greyCounter * 1))); //Combines total movement while adjusting to find the flame, used to return to entry position
-    }
-    else
-    {
-      drive.turn(activeAngle);
-    }
-  }
-  return true; //ONLY WHEN FLAME IS NO LONGER FOUND
-
       drive.move(-1);
       greyCounter++;
       activeAngle = scan.centering(greyArea);
@@ -264,9 +243,7 @@ bool Firefighter::extinguish() {
     }
   }
   return true; //ONLY WHEN FLAME IS NO LONGER FOUND
-
 }
-
 
 
 bool Firefighter::AtoH() {
