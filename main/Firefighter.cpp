@@ -34,7 +34,6 @@ const int SCAN_PIN_L = 42;
 const int SCAN_PIN_R = 44;
 const int SCAN_PIN_M = 46;
 
-
 void Firefighter::init() {
 
   // add subsystem init here
@@ -106,6 +105,7 @@ bool Firefighter::HtoA() { //TODO: in a untested state
         returnAngle = drive.getCurrentRobotAngle();
         drive.resetEncoder();
         drive.resetGyro();
+
 
         if (scan.roomScan() != 0) {
           stateHtoA  = EXTINGUISH; // got to extinguish state
@@ -207,13 +207,13 @@ bool Firefighter::extinguish() {
   	float activeAngle = firstRun; //activeAngle is used to send and recieve angle used for adjusting robot, 
 			    //starting value of -999 is flag for centering() function in Scanner class
 
-  while (scan.roomScan())
+  while (scan.roomScan() == true)
   {
     activeAngle = scan.centering(activeAngle);
 
     if (activeAngle == greyArea) //FLAG VALUE, tells robot to back up (flame found in scanner grey area)
     {
-      drive.move(1);
+      drive.move(-1);
       greyCounter++;
       activeAngle = scan.Centering(greyArea);
     } 
@@ -235,7 +235,38 @@ bool Firefighter::extinguish() {
     }
   }
   return true; //ONLY WHEN FLAME IS NO LONGER FOUND
+
+      drive.move(-1);
+      greyCounter++;
+      activeAngle = scan.centering(greyArea);
+    } 
+    else if (activeAngle == 0)
+    {
+      drive.stop();
+      Serial.print("Yippee");
+    //   fan.start();
+    //   //delay(100); //Check syntax
+    //   while (scan.roomScan)
+    //   {
+    //     drive.move(1);
+    //     extCounter++;
+    //   }
+    //   drive.turn(scan.centering(flameExt));
+    //   drive.move(-1  * ((extCounter * 3) + (greyCounter * 1))); //Combines total movement while adjusting to find the flame, used to return to entry position
+    // }
+      drive.turn(scan.centering(flameExt));
+      drive.move(-1  * ((extCounter * 3) + (greyCounter * 1)));
+    }
+    else
+    {
+      drive.stop();
+      //drive.turn(activeAngle);
+    }
+  }
+  return true; //ONLY WHEN FLAME IS NO LONGER FOUND
+
 }
+
 
 
 bool Firefighter::AtoH() {
