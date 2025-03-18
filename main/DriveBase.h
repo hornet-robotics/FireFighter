@@ -92,7 +92,7 @@ class DriveBase {
   const float MOVE_OUTPUT_BOUND = 255;
 
   // turn pid vars
-  const float TURN_P = 30;
+  const float TURN_P = 20;
   const float TURN_I = 0.5;
   const float TURN_INTEGRAL_BOUND = 100;
   const float TURN_OUTPUT_BOUND_TURN = 255;

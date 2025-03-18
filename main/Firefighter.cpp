@@ -62,7 +62,8 @@ bool Firefighter::HtoA() { //TODO: in a untested state
       }
       break;
 
-    case SHIFT_FORWARD: // shift to avoid colliding with juction after next turn
+    case SHIFT_FORWARD: 
+    //shift to avoid colliding with juction after next turn
       drive.move(JUNCTION_FORWARD_BUFFER);
 
       if (drive.atTargetPosition()) {
@@ -77,10 +78,9 @@ bool Firefighter::HtoA() { //TODO: in a untested state
       if (drive.atTargetAngle()) {
         drive.resetEncoder();
         drive.resetGyro();
-        drive.stop();
 
         if (cycle == 0) {
-          stateHtoA = MOVE_UNTIL_OPENING;
+          stateHtoA = BEFORE_HALLWAY;
           cycle++;
         }
         else {
@@ -89,8 +89,17 @@ bool Firefighter::HtoA() { //TODO: in a untested state
       }
       break;
 
+    case BEFORE_HALLWAY: 
+     drive.moveForward();
+
+      if (!openingOnRight()) {
+        drive.resetEncoder();
+        stateHtoA = MOVE_UNTIL_OPENING;
+      }
+      break;
+
     case ENTER_ROOM: // Move forward robot length + buffer (enter room)
-      drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+      drive.move((ROBOT_LENGTH / 2.54) + ROOM_FORWARD_BUFFER);
 
       if (drive.atTargetPosition()) {
         drive.resetEncoder();
@@ -112,7 +121,7 @@ bool Firefighter::HtoA() { //TODO: in a untested state
         }
         else {
           stateHtoA = UNSCAN_ROOM;
-        }
+	}
 
       }
       break;
@@ -147,7 +156,7 @@ bool Firefighter::HtoA() { //TODO: in a untested state
       break;
 
     case LEAVE_ROOM:
-      drive.move(ROBOT_LENGTH + ROOM_FORWARD_BUFFER);
+      drive.move((ROBOT_LENGTH / 2.54) + ROOM_FORWARD_BUFFER);
 
       if (drive.atTargetPosition()) {
         drive.resetEncoder();
@@ -169,12 +178,12 @@ bool Firefighter::HtoA() { //TODO: in a untested state
     case END:
       return true; // complete
     
-    case EXTINGUISH:
-      if (extinguish()){
-        stateHtoA = TURN_180; // go back and continue after fire detected
-      }
+    // case EXTINGUISH:
+    //   if (extinguish()){
+    //     stateHtoA = TURN_180; // go back and continue after fire detected
+    //   }
 
-      break;
+    //   break;
   
   }
 
