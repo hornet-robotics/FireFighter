@@ -15,9 +15,9 @@ class DCMotor{
   int getSpeed();
 
   private:
-    int speed = 100; 
+    int speed = 255; 
     //pins >>>
-    int IN1 = 49;
-    int IN2 = 51;
-    int ENA = 53;
+    int ENA = 9;
+    int IN1 = 23;
+    int IN2 = 25;
 };
