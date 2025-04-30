@@ -10,6 +10,8 @@ class DriveBase {
 
   public:
 
+  Encoder encoder;
+
   void init(int m1p1, int m1p2, int m2p1, int m2p2, int pwmA, int pwmB);
 
   // used to free PID instances
@@ -105,7 +107,7 @@ class DriveBase {
                           // allows usage of new keyword so obj can be initialized in .cpp init fuction
                           // will need to delete obj when not being used to prevent memory leaks
   PIDController* turnPID;
-  Encoder encoder;
+  // Encoder encoder;
   Gyroscope gyro;
     
 };
