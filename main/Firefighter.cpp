@@ -186,7 +186,6 @@ bool Firefighter::HtoA() { //TODO: in a untested state
     //   break;
   
   }
-
   return false; // not complete
 }
 

@@ -1,3 +1,5 @@
 build/
 .cache/
 libraries/
+FireFighter.cpp
+Scanner.cpp
