@@ -5,7 +5,7 @@
 void Encoder::init() {
     Wire.begin(); //start i2C (establish arduino as conroller/master device)
     // set clock for I2C
-    Wire.setClock(800000L);
+    // Wire.setClock(800000L); don't need to set, default will be used
 
     // SCL -> Digital 21
     // SDA -> Digital 20
@@ -82,17 +82,23 @@ float Encoder::getWrapAngle() {
 int Encoder::isMagnetDetected(){
     Wire.beginTransmission(SENSOR_ADDRESS);
     Wire.write(0x0B); // 0x0C refers to register corresponding to STATUS
-    Wire.endTransmission();
-    Wire.requestFrom(SENSOR_ADDRESS, 1);
-
-    // wait for proper return value then read
-    while(Wire.available() == 0); // returns number of bytes avialable (1)
-    int magnetStatus = Wire.read();
 
     // Serial.begin(2000000);
-    // Serial.print("MD status: ");
-    // Serial.println(magnetStatus, BIN);
-    // Serial.println(magnetStatus);
+
+    // wait for proper return value then read
+    // while(Wire.available() == 0); // returns number of bytes avialable (1)
+    if (Wire.endTransmission() != 0) {
+        //Serial.println("Error: AS5600 not responding!");
+        return -1;
+    }
+    Wire.requestFrom(SENSOR_ADDRESS, 1); // requst 1 byte data from senosr
+
+    int magnetStatus = Wire.read();
+
+    Serial.begin(2000000);
+    Serial.print("MD status: ");
+    Serial.println(magnetStatus, BIN);
+    Serial.println(magnetStatus);
 
     //MH: Too strong magnet - 100111 - DEC: 39 
     //ML: Too weak magnet - 10111 - DEC: 23     
@@ -106,50 +112,37 @@ int Encoder::isMagnetDetected(){
     return magnetStatus; // change back to bool
 }
 
-
 int Encoder::readRawAngle() {
-
-    // work on 0x0D RAW ANGLE (7:0) - 8 bits
-    Wire.beginTransmission(SENSOR_ADDRESS);
-    // send bytes in a queue, tell what data we want to read from sensor
-    Wire.write(0x0D); // 0x0D refers to register corresponding to RAW ANGLE(7:0)
-    Wire.endTransmission();
-    Wire.requestFrom(SENSOR_ADDRESS, 1); // requst 1 byte data from senosr
-
-    // wait for proper return value then read
-    while(Wire.available() == 0); // returns number of bytes avialable (1)
-    lowByte = Wire.read();
-
-    // work on 0x0C RAW ANGLE (11:8) - 4 bits
+    //Serial.begin(2000000);
+   // work on 0x0C RAW ANGLE (11:8)
     Wire.beginTransmission(SENSOR_ADDRESS);
     // send bytes in a queue, tell what data we want to read from sensor
     Wire.write(0x0C); // 0x0C refers to register corresponding to RAW ANGLE(11:8)
-    Wire.endTransmission();
-    Wire.requestFrom(SENSOR_ADDRESS, 1); // requst 1 byte data from senosr
 
-    // wait for proper return value then read
-    while(Wire.available() == 0); // returns number of bytes avialable (1)
-    highByte = Wire.read();
+    if (Wire.endTransmission() != 0) {
+        //Serial.println("Error: AS5600 not responding!");
+        return -1; // helps with error checking
+    }
+    // requst 2 bytes data from senosr since raw angle is 12-bits and spans 2 registers
+    Wire.requestFrom(SENSOR_ADDRESS, 2); // requst 2 bytes data from senosr (get msb and lsb)
+    // request 2 bytes bc will be getting data from 
 
-    // 4 bits have to be shifted to its proper place as we want to build a 12-bit number
-    highByte = highByte << 8; // shifting to left
-    // What is happening here is the following: The variable is being shifted by 8 bits to the left:
-    // Initial value: 00000000|00001111 (word = 16 bits or 2 bytes)
-    // Left shifting by eight bits: 00001111|00000000 so, the high byte is filled in.
-    // Basically, the orignal far left bits didn't matter, and we shift to drop them and to make 
-    // room for the low bye that will be added next
-    
-    // Finally, we combine (bitwise OR) the two numbers:
-    // High: 00001111|00000000
-    // Low:  00000000|00001111
-    //      -----------------
-    // H|L:  00001111|00001111
-    // ^ basically left 4 bits don't matter so we essentially have a 12 bit value even though its actual length is 16
+    if (Wire.available() < 2) { 
+        //Serial.println("Error: No data received!");
+        return -1; // helps with error checking
+    }
 
-    rawAngle = highByte | lowByte; // int is 16 bits (as well as the word)
+    uint8_t msb = Wire.read(); // most significant byte. Read MSB (0x0C)
+    uint8_t lsb = Wire.read(); // least significant byte. Read LSB (0x0D)
 
-    // Serial.begin(2000000);
-    // Serial.println(rawAngle);
+    // shift msb by 8 bits to make room for lsb, use or to combine shifted msb and lsb
+    // and with 0x0FFF (00001111 11111111) to save only lower 12 bit values
+    rawAngle = ((msb << 8) | lsb) & 0x0FFF;
+
+    // 8 bit shift and or example for msb and lsb:
+    // msb shift from 00000000 00001010 to 00001010 00000000
+    // if msb is or'ed with lsb, lsb example value 00000000 01011100
+    // then result will be 00001010 01011100 (msb and lsb)
 
     return rawAngle;
 }
