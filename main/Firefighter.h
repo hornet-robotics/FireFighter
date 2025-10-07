@@ -4,6 +4,7 @@
 #include "DriveBase.h"
 #include "Ultrasonic.h"
 #include "FanMotor.h"
+#include "Scanner.h"
 
 class Firefighter {
 
@@ -16,9 +17,13 @@ class Firefighter {
   Ultrasonic ultraBackRight;
   Ultrasonic ultraFrontRight;
 
+    // subsystem instantiation
+  //DriveBase drive;
   FanMotor fan;
-  
+  Scanner scan;
+
   void init(); // create instances of subsystems
+	       
 
   // return true when complete
   bool HtoA();
