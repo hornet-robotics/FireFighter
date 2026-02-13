@@ -10,7 +10,7 @@
 
 ## Extinguisher Test
 <div align="center">
-    <img src="/media/extinguish.gif" alt="extinguish" width="25%">
+    <img src="/media/extinguisher.gif" alt="extinguisher" width="25%">
 </div>
 
 ## Class Structure
