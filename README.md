@@ -18,9 +18,10 @@
     <img src="/media/class_structure.png" alt="class_structure" width="60%">
 </div>
 
-## key Sensors and Hardware
+## Key Sensors and Hardware
 <div align="center">
     <img src="/media/front.png" alt="front" width="60%">
     <img src="/media/side.png" alt="side" width="60%">
     <img src="/media/bottom.png" alt="bottom" width="60%">
 </div>
+
